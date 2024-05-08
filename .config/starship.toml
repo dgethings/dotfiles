@@ -7,8 +7,6 @@ $git_branch\
 $git_status\
 $fill\
 $python$nodejs$java$golang\
-$line_break\
-$character
 """
  
 add_newline = false
