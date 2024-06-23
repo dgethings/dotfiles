@@ -62,7 +62,7 @@ zstyle :omz:plugins:ssh-agent identities id_ed25519
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(aliases brew direnv dotbare fzf git golang ripgrep ssh-agent)
+plugins=(alias-finder aliases brew direnv dotbare fzf git golang ripgrep ssh-agent)
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/.aliases
