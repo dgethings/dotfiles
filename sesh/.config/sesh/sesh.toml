@@ -1,0 +1,17 @@
+[[session]]
+name = "tmux config"
+path = "~/.config/tmux"
+startup_command = "nvim tmux.conf"
+preview_command = "bat --color=always ~/.config/tmux/tmux.conf"
+
+[[session]]
+name = "aerospace config"
+path = "~/.config/aerospace"
+startup_command = "nvim aerospace.toml"
+preview_command = "bat --color=always ~/.config/aerospace/aerospace.toml"
+
+[[session]]
+name = "zsh config"
+path = "~"
+startup_command = "nvim .zshrc .zprofile .aliases"
+preview_command = "bat --color=always ~/.zshrc"
