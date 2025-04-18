@@ -1,0 +1,46 @@
+[user]
+	name = David Gethings
+	email = dgethings@me.com
+[core]
+	editor = nvim
+  pager = delta
+  excludesfile = ~/.gitignore
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+  navigate = true    # use n and N to move between diff sections
+  linenumbers = true
+  side-by-side = true
+  features = "arctic-fox"
+[merge]
+  conflictstyle = diff3
+[diff]
+  algorithm = histogram
+  colorMoved = plain
+  mnemonicPrefix = true
+  renames = true
+[init]
+	defaultBranch = main
+[column]
+  ui = auto
+[branch]
+  sort = -committerdate
+[tag]
+  sort = version:refname
+[init]
+  defaultBranch = main
+[push]
+  default = simple
+  autoSetupRemote = true
+  followTags = true
+[fetch]
+  prune = true
+  pruneTags = true
+  all = true
+[help]
+  autocorrect = prompt
+[commit]
+  verbose = true
+[rerere]
+  enabled = true
+  autoupdate = true
