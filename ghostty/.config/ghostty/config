@@ -1,0 +1,7 @@
+theme = nord
+font-family = "Hack Nerd Font Mono Regular"
+macos-titlebar-style = hidden
+background-opacity = 0.8
+background-blur = true
+window-padding-y = 10
+window-padding-x = 10
