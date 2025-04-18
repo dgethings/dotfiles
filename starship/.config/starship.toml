@@ -1,37 +1,51 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
-[](fg:nord10 bg:none)[  ](bg:nord10 fg:nord4)[](fg:nord10 bg:nord0)\
+[](fg:nord10 bg:none)[  ](bg:nord10 fg:nord4)[](fg:nord10 bg:none)\
 $conda\
 $docker_context\
 $directory\
 $package\
 $git_branch\
 $git_status\
+${custom.git_end}\
 $cmd_duration\
 $fill\
-[$python$nodejs$java$golang](fg:nord9 bg:none)\
+${custom.prog_ver_start}\
+$python$nodejs$java$golang\
+${custom.prog_ver_end}\
 $line_break\
 $character
 """
 
 add_newline = false
-palette = 'nord_dark'
+palette = 'nord'
+
+[custom.prog_ver_start]
+style = "fg:nord9 bg:none"
+symbol = ""
+detect_files = ["pyproject.toml", ".python-version"]
+
+
+[custom.prog_ver_end]
+style = "fg:nord9 bg:none"
+symbol = ""
+detect_files = ["pyproject.toml", ".python-version"]
 
 [cmd_duration]
-style = "fg:nord0 bg:nord9"
-format = "[ $duration [](fg:nord9 bg:none)]($style)"
+style = "fg:nord9 bg:none"
+format = "[]($style)[ $duration ](fg:nord0 bg:nord9)[]($style)"
 
 [directory]
-style = "bg:nord8 fg:nord0"
-format = "[ $path [](bg:nord0 fg:nord8)]($style)"
+style = "fg:nord8 bg:none"
+format = "[]($style)[ $path ](fg:nord0 bg:nord8)[]($style)"
 truncation_length = 1
 truncation_symbol = "…/"
 
 # Here is how you can shorten some long paths by text replacement
 # similar to mapped_locations in Oh My Posh:
 [directory.substitutions]
-"Documents" = " "
+"Documents" = "󱔘"
 "Downloads" = " "
 "Music" = " "
 "Pictures" = " "
@@ -45,25 +59,32 @@ truncation_symbol = "…/"
 symbol = " "
 
 [conda]
-style = "fg:nord0 bg:nord15"
-format = '[ $environment [](fg:nord15 bg:nord0)]($style)'
+style = "fg:nord15 bg:none"
+format = "[]($style)[ conda $environment ](fg:nord0 bg:nord15)[]($style)"
 
 [docker_context]
-style = "fg:nord0 bg:nord15"
-format = '[ $context [](fg:nord15 bg:nord0)]($style)'
+style = "fg:nord15 bg:none"
+format = "[]($style)[ docker $environment ](fg:nord0 bg:nord15)[]($style)"
 
 [package]
-style = "fg:nord0 bg:nord9"
-format = '[ $version [](fg:nord9 bg:nord0)]($style)'
+style = "fg:nord9 bg:none"
+format = "[]($style)[ $version ](fg:nord0 bg:nord9)[]($style)"
 
 [git_branch]
 symbol = ""
 style = "fg:nord0 bg:nord7"
-format = '[ $symbol $branch [$all_status$ahead_behind ]($style)]($style)'
+# format = '[](fg:nord7 bg:none)[ $symbol $branch [$all_status$ahead_behind ]($style)]($style)'
+format = '[](fg:nord7 bg:none)[ $symbol $branch ]($style)'
 
 [git_status]
-style = "bg:nord7 fg:nord0"
-format = '[](fg:nord7 bg:none)'
+style = "fg:nord0 bg:nord7"
+format = '([\[$all_status$ahead_behind\]]($style))'
+
+[custom.git_end]
+style = "fg:nord7 bg:none"
+symbol = ""
+when = "git status 2>/dev/null; echo $?"
+require_repo = true
 
 [python]
 symbol = ""
@@ -108,7 +129,7 @@ base = "#1e1e2e"
 mantle = "#181825"
 crust = "#11111b"
 
-[palettes.nord_dark]
+[palettes.nord]
 nord0 = "#2E3440"
 nord1 = "#3B4252"
 nord2 = "#434C5E"
