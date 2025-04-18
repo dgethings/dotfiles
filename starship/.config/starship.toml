@@ -1,0 +1,127 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+[](fg:nord10 bg:none)[  ](bg:nord10 fg:nord4)[](fg:nord10 bg:nord0)\
+$conda\
+$docker_context\
+$directory\
+$package\
+$git_branch\
+$git_status\
+$cmd_duration\
+$fill\
+[$python$nodejs$java$golang](fg:nord9 bg:none)\
+$line_break\
+$character
+"""
+
+add_newline = false
+palette = 'nord_dark'
+
+[cmd_duration]
+style = "fg:nord0 bg:nord9"
+format = "[ $duration [](fg:nord9 bg:none)]($style)"
+
+[directory]
+style = "bg:nord8 fg:nord0"
+format = "[ $path [](bg:nord0 fg:nord8)]($style)"
+truncation_length = 1
+truncation_symbol = "…/"
+
+# Here is how you can shorten some long paths by text replacement
+# similar to mapped_locations in Oh My Posh:
+[directory.substitutions]
+"Documents" = " "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+# Keep in mind that the order matters. For example:
+# "Important Documents" = "  "
+# will not be replaced, because "Documents" was already substituted before.
+# So either put "Important Documents" before "Documents" or use the substituted version:
+# "Important  " = "  "
+
+[fill]
+symbol = " "
+
+[conda]
+style = "fg:nord0 bg:nord15"
+format = '[ $environment [](fg:nord15 bg:nord0)]($style)'
+
+[docker_context]
+style = "fg:nord0 bg:nord15"
+format = '[ $context [](fg:nord15 bg:nord0)]($style)'
+
+[package]
+style = "fg:nord0 bg:nord9"
+format = '[ $version [](fg:nord9 bg:nord0)]($style)'
+
+[git_branch]
+symbol = ""
+style = "fg:nord0 bg:nord7"
+format = '[ $symbol $branch [$all_status$ahead_behind ]($style)]($style)'
+
+[git_status]
+style = "bg:nord7 fg:nord0"
+format = '[](fg:nord7 bg:none)'
+
+[python]
+symbol = ""
+style = "fg:nord0 bg:nord9"
+format = '[ [$symbol](fg:nord4 bg:nord9) $version ]($style)'
+
+[golang]
+symbol = ""
+style = "fg:nord0 bg:nord9"
+format = '[ $symbol $version ]($style)'
+
+[nodejs]
+symbol = ""
+style = "fg:nord0 bg:nord9"
+format = '[ $symbol $version ]($style)'
+
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
+
+[palettes.nord_dark]
+nord0 = "#2E3440"
+nord1 = "#3B4252"
+nord2 = "#434C5E"
+nord3 = "#4C566A"
+nord4 = "#D8DEE9"
+nord5 = "#E5E9F0"
+nord6 = "#ECEFF4"
+nord7 = "#8FBCBB"
+nord8 = "#88C0D0"
+nord9 = "#81A1C1"
+nord10 = "#5E81AC"
+nord11 = "#BF616A"
+nord12 = "#D08770"
+nord13 = "#EBCB8B"
+nord14 = "#A3BE8C"
+nord15 = "#B48EAD"
