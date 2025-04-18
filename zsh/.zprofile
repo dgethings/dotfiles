@@ -1,7 +1,6 @@
 # export ZSH="$HOME/.oh-my-zsh"
 export EDITOR='nvim'
 export PATH=${PATH}:${HOME}/.cargo/bin:${HOME}/.local/bin
-export BAT_THEME=Nord
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
     --color=fg:#e5e9f0,bg:#3b4252,hl:#81a1c1
     --color=fg+:#e5e9f0,bg+:#3b4252,hl+:#81a1c1
