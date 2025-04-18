@@ -9,7 +9,7 @@ If you clone this repo to a dir other than `$HOME` then you'll need to supply th
 Each of the dotfiles is structured under a directory. For example, to install the zsh dotfiles run:
 
 ```bash
-stow -t ~ zsh
+stow zsh # add `-t ~` if the repo is not directly off ${HOME}
 ```
 
 From the root of this repo.
