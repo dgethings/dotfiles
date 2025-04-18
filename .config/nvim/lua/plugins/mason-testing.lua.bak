@@ -1,8 +1,0 @@
-return {
-  "williamboman/mason.nvim",
-  opts = {
-    registries = {
-      "file:~/git/mason-registry",
-    },
-  },
-}
