@@ -12,8 +12,6 @@ Each of the dotfiles is structured under a directory. For example, to install th
 stow zsh # add `-t ~` if the repo is not directly off ${HOME}
 ```
 
-From the root of this repo.
-
 To install the `brew` packages run:
 
 ```bash
