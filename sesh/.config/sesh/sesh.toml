@@ -15,3 +15,9 @@ name = "zsh config"
 path = "~"
 startup_command = "nvim .zshrc .zprofile .aliases"
 preview_command = "bat --color=always ~/.zshrc"
+
+[[session]]
+name = "starship config"
+path = "~/.config"
+startup_command = "nvim starship.toml"
+preview_command = "bat --color=always ~/.config/starship.toml"
