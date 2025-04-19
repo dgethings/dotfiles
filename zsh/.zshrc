@@ -11,6 +11,8 @@ zinit light Aloxaf/fzf-tab
 zinit light zsh-users/zsh-autosuggestions
 zinit light zdharma-continuum/fast-syntax-highlighting
 zinit light zsh-users/zsh-completions
+# ensure this is after autosuggestions and syntax-highlighting
+zinit light softmoth/zsh-vim-mode
 
 autoload -U compinit && compinit
 
