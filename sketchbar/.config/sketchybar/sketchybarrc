@@ -24,10 +24,10 @@ sketchybar --bar position=top height=40 blur_radius=30 color=0x00000000
 default=(
   padding_left=5
   padding_right=5
-  icon.font="SF Prof:Semibold:17.0"
+  icon.font="SF Pro:Semibold:17.0"
   label.font="SF Pro:Semibold:14.0"
-  icon.color=0xffffffff
-  label.color=0xffffffff
+  icon.color=0xffeceff4
+  label.color=0xffeceff4
   icon.padding_left=4
   icon.padding_right=4
   label.padding_left=4
@@ -47,7 +47,8 @@ sketchybar -m --bar blur_radius=50 \
   click_script="sketchybar -m --set \$NAME popup.drawing=toggle" \
   popup.background.border_width=2 \
   popup.background.corner_radius=3 \
-  popup.background.border_color=0xff9dd274 \
+  popup.background.border_color=0xffeceff4 \
+  popup.background.color=0xfa4c566a \
   --default background.padding_left=5 \
   background.padding_right=5 \
   icon.padding_right=5 \
@@ -102,18 +103,18 @@ sketchybar -m --bar blur_radius=50 \
 ### Aerospace integration
 sketchybar --add event aerospace_workspace_change
 
-for sid in $(aerospace list-workspaces --all); do
-  sketchybar --add item space.$sid left \
-    --subscribe space.$sid aerospace_workspace_change \
-    --set space.$sid \
-    background.color=0x44ffffff \
-    background.corner_radius=5 \
-    background.height=20 \
-    background.drawing=off \
-    label=$sid \
-    click_script="aerosapce workspace $sid" \
-    script="$PLUGIN_DIR/aerosapce.sh $sid"
-done
+# for sid in $(aerospace list-workspaces --all); do
+#   sketchybar --add item space."$sid" left \
+#     --subscribe space."$sid" aerospace_workspace_change \
+#     --set space."$sid" \
+#     background.color=0x44ffffff \
+#     background.corner_radius=5 \
+#     background.height=20 \
+#     background.drawing=off \
+#     label="$sid" \
+#     click_script="aerosapce workspace $sid" \
+#     script="$PLUGIN_DIR/aerosapce.sh $sid"
+# done
 
 sketchybar --add item front_app left \
   --set front_app script="$PLUGIN_DIR/front_app.sh" \
@@ -144,10 +145,11 @@ sketchybar --add item clock right \
   background.padding_left=15 \
   icon.font.size=18 \
   click_script="open -a 'Slack'" \
-  --subscribe slack system_woke-subscribe battery system_woke power_source_change \
+  --subscribe slack system_woke \
+  --subscribe battery system_woke power_source_change \
   --add item packages right \
   --set packages update_freq=7200 \
-  --set packages script="$PLUGIN_DIR/package_monitor.sh" \
+  --set packages script="$PLUGIN_DIR/package_update.sh" \
   --set packages label="􀐚 " \
   --subscribe packages mouse.clicked \
   --add event hide_stats \

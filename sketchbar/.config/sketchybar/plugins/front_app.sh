@@ -9,6 +9,9 @@ case $INFO in
 "Warp")
   ICON="􀩼"
   ;;
+"Ghostty")
+  ICON="􀩼"
+  ;;
 "Arc")
   ICON="􀎬"
   ;;
@@ -18,6 +21,9 @@ case $INFO in
 "Calendar")
   ICON="􀉉"
   ;;
+"Fantastical")
+  ICON="􀉉"
+  ;;
 "Discord")
   ICON=
   ;;
@@ -25,10 +31,10 @@ case $INFO in
   ICON=
   ;;
 "Finder")
-  ICON="􀈕"
+  ICON=""
   ;;
 "kitty")
-  ICON=󰄛
+  ICON="󰄛"
   ;;
 "Messages")
   ICON="􀌤"
@@ -42,10 +48,16 @@ case $INFO in
 "Mail")
   ICON="􀈣"
   ;;
+"SF Symbols")
+  ICON="􀈏"
+  ;;
+"Obsidian")
+  ICON=󰎚
+  ;;
 *)
-  ICON="􀑋 $INFO"
+  ICON="􀑋 "
   ;;
 esac
 
 sketchybar --set "$NAME" icon="$ICON"
-sketchybar --set "$NAME.name" label="$INFO"
+sketchybar --set "$NAME" label="$INFO"

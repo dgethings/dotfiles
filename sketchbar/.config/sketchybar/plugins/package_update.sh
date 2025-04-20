@@ -9,14 +9,10 @@ update() {
   function click() {
     osascript -e 'display notification "Starting Brew package updates..." with title "Package Updates"'
     bubug && osascript -e 'display notification "Brew packages updated" with title "Package Updates"'
-    check
   }
   case "$SENDER" in
   "mouse.clicked")
     click
-    ;;
-  *)
-    check
     ;;
   esac
 
@@ -54,13 +50,7 @@ update() {
   DEFAULT="0"
 
   # sum of all outdated packages
-  SUM=$((${BREW:-DEFAULT} + ${CASK:-DEFAULT} + ${MAS:-DEFAULT}))
-
-  # icon to be displayed next to number of outdated packages. Feel free to customize. Default: 
-  ICON=""
-
-  # icon to be displayed if no packages are outdated. Change to `ZERO=""` if you want the widget to be invisible when no packages are out of date. Default: ✔︎
-  ZERO=""
+  SUM=$((${BREW:-$DEFAULT} + ${CASK:-$DEFAULT} + ${MAS:-$DEFAULT}))
 
   if [[ $SUM -gt 0 ]]; then
     FINAL="􀐚 ($SUM)"
