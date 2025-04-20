@@ -87,7 +87,7 @@ when = "git status 2>/dev/null; echo $?"
 require_repo = true
 
 [python]
-symbol = ""
+symbol = ""
 style = "fg:nord0 bg:nord9"
 format = '[ [$symbol](fg:nord4 bg:nord9) $version ]($style)'
 
