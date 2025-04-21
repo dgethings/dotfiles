@@ -4,19 +4,34 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
 
+# faster way to use eval during startup
+# uses z-c/null as the light/load "drink" to add the ice to
+zinit light NICHOLAS85/z-a-eval
 # load brew so brew installed commands are in the path
-eval $(/opt/homebrew/bin/brew shellenv)
+zinit ice id-as"brew_init" has"brew" \
+  eval"/opt/homebrew/bin/brew shellenv"
+zinit light zdharma-continuum/null
+
+# improved startup performance from fast-syntax-highlighting install instructions in repo
+zinit wait lucid for \
+  atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
+    zdharma-continuum/fast-syntax-highlighting \
+  blockf \
+    zsh-users/zsh-completions \
+  atload"!_zsh_autosuggest_start" \
+    zsh-users/zsh-autosuggestions
+
+# faster direnv initialization
+zinit from"gh-r" as"program" mv"direnv* -> direnv" \
+    atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' \
+    pick"direnv" src="zhook.zsh" for \
+        direnv/direnv
 
 zinit light Aloxaf/fzf-tab
-zinit light zsh-users/zsh-autosuggestions
-zinit light zdharma-continuum/fast-syntax-highlighting
-zinit light zsh-users/zsh-completions
-# ensure this is after autosuggestions and syntax-highlighting
-zinit light softmoth/zsh-vim-mode
 
-autoload -U compinit && compinit
-
-zinit cdreplay -q
+# for what I need, this is enough vim mode in my shell
+# and is much faster to start than softmoth/zsh-vim-mode
+bindkey -v
 
 # keybindings
 # bindkey '^j' history-search-forward
@@ -43,10 +58,24 @@ zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza $realpath'
 
-eval "$(fzf --zsh)"
-eval "$(zoxide init zsh)"
-eval "$(starship init zsh)"
+# I use brew to install these
+# so use z-a-eval to efficiently add completions
+zinit ice id-as"fzf_load" has"fzf" \
+  eval"fzf --zsh" run-atpull
+zinit light zdharma-continuum/null
+zinit ice id-as"init" has"zoxide" \
+  eval"zoxide init zsh"
+zinit light zdharma-continuum/null
+zinit ice id-as"starship_init" has"starship" \
+  eval"starship init zsh"
+zinit light zdharma-continuum/null
 source ~/.orbstack/shell/init.zsh 2>/dev/null || :
+zinit ice id-as"orbctl_completion" has"orbctl" \
+  eval"orbctl completion zsh"
+zinit light zdharma-continuum/null
+zinit ice id-as"orbctl_completion" has"orbctl" \
+  eval"devpod completion zsh"
+zinit light zdharma-continuum/null
 
 # load OMZ plugins
 zinit snippet OMZP::git
