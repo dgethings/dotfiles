@@ -18,7 +18,9 @@ zinit wait lucid for \
     zdharma-continuum/fast-syntax-highlighting \
   blockf \
     zsh-users/zsh-completions \
-  atload"!_zsh_autosuggest_start" \
+
+# stop zinit overloading `zi` alias (i.e. use zoxide's `zi`)
+zinit wait lucid atload'_zsh_autosuggest_start; unalias zi' light-mode for \
     zsh-users/zsh-autosuggestions
 
 # faster direnv initialization
@@ -32,10 +34,6 @@ zinit light Aloxaf/fzf-tab
 # for what I need, this is enough vim mode in my shell
 # and is much faster to start than softmoth/zsh-vim-mode
 bindkey -v
-
-# keybindings
-# bindkey '^j' history-search-forward
-# bindkey '^k' history-search-backward
 
 # history settings
 HISTSIZE=100000
@@ -78,12 +76,13 @@ zinit ice id-as"orbctl_completion" has"orbctl" \
 zinit light zdharma-continuum/null
 
 # load OMZ plugins
-zinit snippet OMZP::git
-zinit snippet OMZP::brew
-zinit snippet OMZP::direnv
-zinit snippet OMZP::fzf
-zinit snippet OMZP::gh
-zinit snippet OMZP::uv
+zinit wait lucid for \
+  OMZP::git \
+  OMZP::brew \
+  OMZP::direnv \
+  OMZP::fzf \
+  OMZP::gh \
+  OMZP::uv
 
 # setup ssh agent
 zinit snippet OMZP::ssh-agent
@@ -91,10 +90,6 @@ zstyle :omz:plugins:ssh-agent quiet yes
 zstyle :omz:plugins:ssh-agent lazy yes
 zstyle :omz:plugins:ssh-agent agent-forwarding yes
 zstyle :omz:plugins:ssh-agent identities ~/.ssh/id_ed25519
-
-# stop zinit overloading `zi` alias (i.e. use zoxide's `zi`)
-zinit wait lucid atload'_zsh_autosuggest_start; unalias zi' light-mode for \
-    zsh-users/zsh-autosuggestions
 
 zinit snippet ~/.zinit/tmux-sesh/sesh.zsh
 
