@@ -10,3 +10,6 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
 # Added by OrbStack: command-line tools and integration
 # This won't be added again if you remove it.
 # source ~/.orbstack/shell/init.zsh 2>/dev/null || :
+
+# Added by `rbenv init` on Sun 20 Jul 2025 13:48:08 BST
+eval "$(rbenv init - --no-rehash zsh)"
