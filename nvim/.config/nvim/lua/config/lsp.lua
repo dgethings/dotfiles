@@ -32,3 +32,4 @@ require("lspconfig").ruff.setup({
     },
   },
 })
+vim.lsp.enable("ty")
