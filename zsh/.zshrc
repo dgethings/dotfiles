@@ -94,3 +94,8 @@ zstyle :omz:plugins:ssh-agent identities ~/.ssh/id_ed25519
 
 zinit snippet ~/.zinit/tmux-sesh/sesh.zsh
 
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/dgethings/.lmstudio/bin"
+# End of LM Studio CLI section
+
