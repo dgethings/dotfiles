@@ -31,7 +31,7 @@ case $INFO in
   ICON=
   ;;
 "Finder")
-  ICON=""
+  ICON="􀈕"
   ;;
 "kitty")
   ICON="󰄛"
@@ -53,6 +53,21 @@ case $INFO in
   ;;
 "Obsidian")
   ICON=󰎚
+  ;;
+"Zen")
+  ICON="􀥂"
+  ;;
+"OmniFocus")
+  ICON="􀉋"
+  ;;
+"Slack")
+  ICON=󰒱
+  ;;
+"Discord")
+  ICON=
+  ;;
+"Shortcuts")
+  ICON="􀆜"
   ;;
 *)
   ICON="􀑋 "

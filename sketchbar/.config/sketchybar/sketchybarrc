@@ -140,12 +140,13 @@ sketchybar --add item clock right \
   --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
   --add item slack right \
   --set slack \
-  update_freq=180 \
-  script="$PLUGIN_DIR/slack.sh" \
-  background.padding_left=15 \
-  icon.font.size=18 \
-  click_script="open -a 'Slack'" \
-  --subscribe slack system_woke \
+    update_freq=180 \
+    script="$PLUGIN_DIR/slack.sh" \
+    background.padding_left=15 \
+    icon.font.size=18 \
+    click_script="open -a 'Slack'" \
+    --subscribe slack system_woke \
+
   --subscribe battery system_woke power_source_change \
   --add item packages right \
   --set packages update_freq=7200 \
