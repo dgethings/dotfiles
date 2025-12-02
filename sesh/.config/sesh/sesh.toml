@@ -55,3 +55,13 @@ name = "evpn-vxlan"
 path = "~/git/qualifier1/evpn-vxlan/"
 startup_command = "nvim"
 preview_command = "dir ~/git/qualifier1/evpn-vxlan/"
+
+[[session]]
+name = "grifter"
+path = "~/Developer/grifter"
+preview_command = "bat ~/Developer/grifter/README.md"
+windows = ["nvim"]
+
+[[window]]
+name = "nvim"
+startup_command = "nvim"
