@@ -65,3 +65,8 @@ windows = ["nvim"]
 [[window]]
 name = "nvim"
 startup_command = "nvim"
+
+[[session]]
+name = "obsidian"
+path = "/Users/dgethings/Library/Mobile Documents/iCloud~md~obsidian/Documents/Main/"
+startup_command = "opencode --agent youtube-processor"
