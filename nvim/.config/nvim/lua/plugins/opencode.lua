@@ -1,24 +1,26 @@
 return {
-  "silvabyte/opencode.nvim",
-  dependencies = { "nvim-lua/plenary.nvim" },
-  -- Use "VeryLazy" if you want voice commands available immediately
-  -- Use "InsertEnter" if you only need completions
-  event = "VeryLazy",
-  -- Options
-  opts = {
-    completion = {
-      auto_trigger = true, -- complete as you type
-      debounce = 150, -- ms to wait
-      accept_key = "<Tab>",
-      dismiss_key = "<C-e>",
-      --etc
+  "sudo-tee/opencode.nvim",
+  config = function()
+    require("opencode").setup({})
+  end,
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    {
+      "MeanderingProgrammer/render-markdown.nvim",
+      opts = {
+        anti_conceal = { enabled = false },
+        file_types = { "markdown", "opencode_output" },
+      },
+      ft = { "markdown", "Avante", "copilot-chat", "opencode_output" },
     },
-    model = {
-      provider = "zen-coding-plan",
-      model_id = "glm-4.6",
-      -- or big pickle, big pickle, big pickle!
-      -- provider = "opencode",
-      -- model_id = "big-pickle"
-    },
+    -- Optional, for file mentions and commands completion, pick only one
+    "saghen/blink.cmp",
+    -- 'hrsh7th/nvim-cmp',
+
+    -- Optional, for file mentions picker, pick only one
+    "folke/snacks.nvim",
+    -- 'nvim-telescope/telescope.nvim',
+    -- 'ibhagwan/fzf-lua',
+    -- 'nvim_mini/mini.nvim',
   },
 }
