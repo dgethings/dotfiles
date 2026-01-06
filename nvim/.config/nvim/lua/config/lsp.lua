@@ -25,11 +25,23 @@
 --     },
 --   },
 -- })
-require("lspconfig").ruff.setup({
-  init_options = {
-    settings = {
-      -- Ruff language server settings go here
+-- require("lspconfig").ruff.setup({
+--   init_options = {
+--     settings = {
+--       -- Ruff language server settings go here
+--     },
+--   },
+-- })
+vim.lsp.enable("basedpyright")
+return {
+  "neovim/nvim-lspconfig",
+  opts = {
+    servers = {
+      ruff = {
+        init_options = {
+          settings = {},
+        },
+      },
     },
   },
-})
-vim.lsp.enable("ty")
+}
