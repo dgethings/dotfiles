@@ -13,6 +13,7 @@ from pathlib import Path
 from typer import Typer, Argument, Option, Exit
 from typing import Annotated
 import yaml
+import os
 
 app = Typer()
 
@@ -30,8 +31,8 @@ def main(
     contents: Annotated[str, Argument(help="contents of the obsidian note")],
     frontmatter: Annotated[str, Argument(help="custom fronmatter fields to add")] = "",
     vault_dir: Annotated[
-        Path, Argument(envvar="VAULT_DIR", help="Path to Obsidian vault")
-    ] = Path.cwd(),
+        Path, Argument(envvar="VAULT_PATH", help="Path to Obsidian vault")
+    ] = os.getenv("VAULT_PATH"),
     overwrite: Annotated[
         bool,
         Option(help="whether or not to overwrite the existing file"),

@@ -43,7 +43,7 @@ The skill will output the following JSON for you to use in following steps.
 
 ### Generate Summary (if transcript available)
 
-If transcript is available and not "No transcript available", call the `summarize` skill instructing it to pull out the important information, URLs in the description and key steps/actions.
+If transcript is available and not "No transcript available", use the `summarize` skill instructing it to pull out the important information, URLs in the description and key steps/actions.
 
 The skill will return markdown. Use this for the "content" argument in later steps.
 
@@ -78,7 +78,7 @@ Use this for the "contents" argument in later steps.
 
 ### Generate Obsidian Markdown
 
-Write the obsidian markdown file with the write-bsidian-note tool. 
+Write the obsidian markdown file with the write-obsidian-note tool. 
 
 ## Error Handling
 
