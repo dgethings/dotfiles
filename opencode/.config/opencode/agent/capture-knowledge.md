@@ -2,7 +2,9 @@
 description: Process YouTube video and generate Obsidian markdown file with transcript summary
 mode: primary
 tools:
-  write-obsidian-note: true
+  write_obsidian_note: true
+  youtube_frontmatter: true
+  youtube_metadata: true
   webfetch: false
   write: true
   edit: true
@@ -28,36 +30,27 @@ You will receive these parameters:
 
 ### Get YouTube metadata
 
-Use the `transcribe-youtube` skill to get the YouTube video title, ID, description and transcript. 
+Use the youtube_metadata tool with "youtube_input" as the tool argument. It will accept either the YouTube URL or video ID as an argument - there is no need to extract the video ID yourself.
 
-The skill will output the following JSON for you to use in following steps.
+The will return a `filename` containing the JSON data needed in later steps.
 
-```json
-{
-    "video_id": string,
-    "title": string,
-    "transcript": string,
-    "description": string,
-}
-```
+### Generate Summary
 
-### Generate Summary (if transcript available)
-
-If transcript is available and not "No transcript available", use the `summarize` skill instructing it to pull out the important information, URLs in the description and key steps/actions.
-
-The skill will return markdown. Use this for the "content" argument in later steps.
+Use the `summarize` skill passing the `filename` to instruct it to pull out the important information, URLs in the description and key steps/actions.
 
 ### Generate list of tags
 
-Using the "transcript" and "description" generate a list of relevant tags using the format "tag1,tag2,tag3". Each tag MUST NOT contain any spaces. Tags must be a single word. The tags MUST contain "youtube,video" along with video specific tags you find relevant.
+Use the `.summary` and `.description` fields from the JSON file generate a list of relevant tags using the format "tag1,tag2,tag3". Each tag MUST NOT contain any spaces. Tags must be a single word. The tags MUST contain "youtube,video" along with video specific tags you find relevant.
 
 ### Generate Frontmatter
 
-Create a string using the following format "video_id:{video_id},video_url:https://www.youtube.com/watch?v={video_id}". Use this for the "frontmatter" argument in later steps.
+Use the youtube_frontmatter tool to generate the "frontmatter" argument used in later steps.
 
 ### Generate Markdown Contents
 
-Sanitize user_comments to prevent injection: escape markdown special characters (*,_, [, ], etc.)
+Read the JSON file to access the title and description. Also use the summary that was generated in the previous step.
+
+Sanitize user_comments to prevent injection: escape markdown special characters (*,_, [, ], etc.).
 
 Then generate a string using this markdown format:
 
@@ -73,12 +66,10 @@ Then generate a string using this markdown format:
 ```
 
 Use this for the "contents" argument in later steps.
-```
-```
 
 ### Generate Obsidian Markdown
 
-Write the obsidian markdown file with the write-obsidian-note tool. 
+Write the obsidian markdown file with the write_obsidian_note tool. 
 
 ## Error Handling
 

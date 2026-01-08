@@ -1,0 +1,17 @@
+[project]
+name = "opencode"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pyyaml>=6.0.3",
+    "requests>=2.32.5",
+    "typer>=0.21.1",
+    "youtube-transcript-api>=1.2.3",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+]

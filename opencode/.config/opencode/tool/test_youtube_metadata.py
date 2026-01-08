@@ -1,10 +1,5 @@
-# /// script
-# dependencies = [
-#     "pytest>=9.0.0",
-# ]
-# ///
 import pytest
-from youtube_id import return_id
+from youtube_metadata import return_id
 
 TEST_URLS = [
     ("http://www.youtube.com/watch?v=-wtIMTCHWuI", "-wtIMTCHWuI"),

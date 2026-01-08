@@ -11,21 +11,53 @@ import json
 import os
 import re
 import sys
+import uuid
 from typing import Any
 
 import requests
-from dotenv import load_dotenv
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import (
     NoTranscriptFound,
     TranscriptsDisabled,
     VideoUnavailable,
 )
-
-# Load environment variables from .env file if it exists
-load_dotenv(override=True)
+from urllib.parse import urlparse, parse_qs
 
 DEBUG = os.getenv("DEBUG", False)
+
+
+def return_id(url: str) -> str:
+    yt_url = urlparse(url)
+
+    if "youtu.be" in yt_url.netloc:
+        return yt_url.path.lstrip("/").split("?")[0].split("&")[0]
+
+    if "youtube.com" in yt_url.netloc:
+        if yt_url.path == "/watch":
+            param = parse_qs(yt_url.query)
+            return param.get("v", [""])[0]
+        elif (
+            yt_url.path.startswith("/v/")
+            or yt_url.path.startswith("/embed/")
+            or yt_url.path.startswith("/e/")
+        ):
+            return yt_url.path.split("/")[-1].split("?")[0]
+        elif yt_url.path.startswith("/shorts/") or yt_url.path.startswith("/live/"):
+            return yt_url.path.split("/")[-1].split("?")[0]
+        elif yt_url.path == "/oembed":
+            param = parse_qs(yt_url.query)
+            url_param = param.get("url", [""])[0]
+            return return_id(url_param)
+        elif yt_url.path == "/attribution_link":
+            param = parse_qs(yt_url.query)
+            u_param = param.get("u", [""])[0]
+            parsed_u = urlparse(u_param)
+            param_u = parse_qs(parsed_u.query)
+            return param_u.get("v", [""])[0]
+    elif "youtube-nocookie.com" in yt_url.netloc:
+        return yt_url.path.split("/")[-1].split("?")[0]
+
+    return ""
 
 
 def sanitize_title(title: str) -> str:
@@ -282,7 +314,7 @@ def execute(args: dict[str, Any]) -> str:
             - video_id: YouTube video ID to fetch transcript and metadata for
 
     Returns:
-        JSON string containing video information
+        Filename of the written JSON file
 
     Raises:
         Exception: If tool execution fails
@@ -295,7 +327,10 @@ def execute(args: dict[str, Any]) -> str:
         )
 
     try:
-        video_id = args.get("video_id")
+        video_url = args.get("video_id")
+        if not video_url:
+            raise Exception("video_id argument is required")
+        video_id = return_id(video_url)
         if not video_id:
             raise Exception("video_id argument is required")
 
@@ -311,7 +346,11 @@ def execute(args: dict[str, Any]) -> str:
             "description": description,
         }
 
-        return json.dumps(result)
+        filename = f"{uuid.uuid4()}.json"
+        with open(filename, "w") as f:
+            json.dump(result, f)
+
+        return filename
 
     except Exception as e:
         raise Exception(f"YouTube tool failed: {str(e)}")
@@ -319,14 +358,12 @@ def execute(args: dict[str, Any]) -> str:
 
 # For direct testing
 if __name__ == "__main__":
-    import sys
-
     if len(sys.argv) != 2:
-        print("Usage: python youtube_transcript.py <video_id>")
+        print("Usage: uv run youtube_metadata.py <video_id>")
         sys.exit(1)
 
     try:
-        result = execute({"video_id": sys.argv[1]})
+        result = execute({"video_id": return_id(sys.argv[1])})
         print(result)
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
