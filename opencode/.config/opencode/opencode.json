@@ -10,5 +10,19 @@
         ".toml"
       ]
     }
+  },
+  "mcp": {
+    "mcp-obsidian": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "mcp-obsidian"
+      ],
+      "environment": {
+        "OBSIDIAN_API_KEY": "c3a206318d19a1a889cff151be239ae4e3ecede24028297549fc539704ca4587",
+        "OBSIDIAN_HOST": "localhost",
+        "OBSIDIAN_PORT": "27124"
+      }
+    }
   }
 }
