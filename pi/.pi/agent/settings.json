@@ -1,0 +1,6 @@
+{
+  "lastChangelogVersion": "0.54.2",
+  "theme": "nord",
+  "defaultProvider": "z.ai",
+  "defaultModel": "glm-4.7"
+}
