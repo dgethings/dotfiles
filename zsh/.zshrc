@@ -95,14 +95,3 @@ zstyle :omz:plugins:ssh-agent identities ~/.ssh/id_ed25519
 zinit snippet ~/.zinit/tmux-sesh/sesh.zsh
 
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/dgethings/.lmstudio/bin"
-# End of LM Studio CLI section
-
-
-# bun completions
-[ -s "/Users/dgethings/.bun/_bun" ] && source "/Users/dgethings/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
