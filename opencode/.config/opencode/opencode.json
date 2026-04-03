@@ -18,6 +18,15 @@
       "extensions": [
         ".toml"
       ]
+    },
+    "ty": {
+      "command": [
+        "ty",
+        "check"
+      ],
+      "extensions": [
+        ".py"
+      ]
     }
   }
 }
