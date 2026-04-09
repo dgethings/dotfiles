@@ -1,5 +1,6 @@
 export EDITOR='nvim'
 export TERM=xterm-ghostty
+if [[ $TERM_PROGRAM=="tmux" || $TERM_PROGRAM=="ghostty" ]]; then export TERM=xterm-ghostty; elif $TERM_PROGRAM=="vscode"; then export TERM=xterm-265color; fi
 export BUN_INSTALL="$HOME/.bun"
 export PATH="${BUN_INSTALL}/bin:${PATH}:${HOME}/.cargo/bin:${HOME}/.local/bin:/Applications/Obsidian.app/Contents/MacOS"
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
