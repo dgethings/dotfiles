@@ -14,6 +14,7 @@ after-login-command = []
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = [
   'exec-and-forget borders active_color=0xffd8dee9 inactive_color=0xff4c566a width=5.0',
+  'layout tiles horizontal vertical',
 ]
 
 # exec-on-workspace-change = [
