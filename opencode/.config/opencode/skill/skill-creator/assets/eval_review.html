@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eval Set Review</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #faf9f5;
+            --surface: #ffffff;
+            --text: #141413;
+            --text-secondary: #5c5a54;
+            --border: #e8e6dc;
+            --accent: #d97757;
+            --accent-hover: #c4663f;
+            --accent-light: #f0ddd4;
+            --green: #788c5d;
+            --green-light: #f5f8f2;
+            --red: #c44;
+            --red-light: #fef2f2;
+            --font-display: 'Poppins', sans-serif;
+            --font-body: 'Lora', serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 32px 24px;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-display);
+            font-weight: 600;
+        }
+
+        .header {
+            margin-bottom: 32px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .header .skill-name {
+            color: var(--accent);
+        }
+
+        .header .description {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-top: 8px;
+            padding: 12px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .actions-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .actions-bar .left-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .actions-bar .stats {
+            font-family: var(--font-display);
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .actions-bar .stats strong {
+            color: var(--text);
+        }
+
+        button {
+            font-family: var(--font-display);
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: inherit;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-danger {
+            background: var(--red-light);
+            color: var(--red);
+            border: 1px solid transparent;
+        }
+
+        .btn-danger:hover {
+            border-color: var(--red);
+        }
+
+        .eval-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .eval-table thead th {
+            background: var(--text);
+            color: var(--bg);
+            font-family: var(--font-display);
+            font-weight: 500;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 12px 14px;
+            text-align: left;
+        }
+
+        .eval-table tbody td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        .eval-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .eval-table tbody tr:hover td {
+            background: rgba(217, 119, 87, 0.04);
+        }
+
+        .eval-table .col-num {
+            width: 44px;
+            text-align: center;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .eval-table .col-query {
+            width: auto;
+        }
+
+        .eval-table .col-trigger {
+            width: 140px;
+            text-align: center;
+        }
+
+        .eval-table .col-actions {
+            width: 80px;
+            text-align: center;
+        }
+
+        .query-textarea {
+            width: 100%;
+            min-height: 44px;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: var(--font-body);
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text);
+            background: var(--bg);
+            resize: vertical;
+            transition: border-color 0.15s ease;
+        }
+
+        .query-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .toggle {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+
+        .toggle-track {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--border);
+            border-radius: 12px;
+            transition: background 0.2s ease;
+        }
+
+        .toggle input:checked + .toggle-track {
+            background: var(--accent);
+        }
+
+        .toggle-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+
+        .toggle input:checked ~ .toggle-thumb {
+            transform: translateX(20px);
+        }
+
+        .toggle-label {
+            font-family: var(--font-display);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            min-width: 28px;
+            text-align: center;
+        }
+
+        .toggle-label.active {
+            color: var(--green);
+        }
+
+        .toggle-label.inactive {
+            color: var(--red);
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.15s ease;
+        }
+
+        .btn-delete {
+            color: var(--text-secondary);
+            background: transparent;
+        }
+
+        .btn-delete:hover {
+            color: var(--red);
+            background: var(--red-light);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .export-bar {
+            margin-top: 24px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .footer-note {
+            margin-top: 32px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-family: var(--font-display);
+        }
+
+        @media (max-width: 640px) {
+            body { padding: 16px 12px; }
+            .eval-table .col-num { width: 32px; }
+            .eval-table .col-trigger { width: 120px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Eval Set: <span class="skill-name" id="skillName"></span></h1>
+        <div class="description" id="skillDescription"></div>
+    </div>
+
+    <div class="actions-bar">
+        <div class="left-actions">
+            <button class="btn btn-secondary" onclick="addRow()">&#43; Add Query</button>
+            <button class="btn btn-secondary" onclick="addMultipleRows(5)">+5 Queries</button>
+        </div>
+        <div class="stats" id="statsDisplay"></div>
+    </div>
+
+    <table class="eval-table" id="evalTable">
+        <thead>
+            <tr>
+                <th class="col-num">#</th>
+                <th class="col-query">Query</th>
+                <th class="col-trigger">Should Trigger</th>
+                <th class="col-actions"></th>
+            </tr>
+        </thead>
+        <tbody id="evalTableBody">
+        </tbody>
+    </table>
+
+    <div class="export-bar">
+        <button class="btn btn-primary" onclick="exportEvalSet()">&#11015; Export eval_set.json</button>
+    </div>
+
+    <div class="footer-note">
+        Edit queries and toggle should-trigger, then export to download as eval_set.json
+    </div>
+</div>
+
+<script>
+const skillName = "__SKILL_NAME_PLACEHOLDER__";
+const skillDescription = "__SKILL_DESCRIPTION_PLACEHOLDER__";
+const evalData = __EVAL_DATA_PLACEHOLDER__;
+
+let rows = [];
+
+function init() {
+    document.getElementById('skillName').textContent = skillName;
+    document.getElementById('skillDescription').textContent = skillDescription;
+
+    if (Array.isArray(evalData) && evalData.length > 0) {
+        rows = evalData.map(function(item) {
+            return {
+                query: item.query || '',
+                should_trigger: item.should_trigger !== undefined ? item.should_trigger : true
+            };
+        });
+    } else {
+        rows = [
+            { query: '', should_trigger: true },
+            { query: '', should_trigger: true },
+            { query: '', should_trigger: false },
+        ];
+    }
+
+    renderTable();
+    updateStats();
+}
+
+function renderTable() {
+    const tbody = document.getElementById('evalTableBody');
+    tbody.innerHTML = '';
+
+    rows.forEach(function(row, index) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = buildRowHtml(row, index);
+        tbody.appendChild(tr);
+    });
+}
+
+function buildRowHtml(row, index) {
+    const triggerLabelClass = row.should_trigger ? 'active' : 'inactive';
+    const triggerLabelText = row.should_trigger ? 'Yes' : 'No';
+
+    return '<td class="col-num">' + (index + 1) + '</td>' +
+        '<td class="col-query">' +
+            '<textarea class="query-textarea" data-index="' + index + '" ' +
+                'oninput="updateQuery(' + index + ', this.value)" ' +
+                'placeholder="Enter a query that a user might send...">' +
+                escapeHtml(row.query) +
+            '</textarea>' +
+        '</td>' +
+        '<td class="col-trigger">' +
+            '<div class="toggle-container">' +
+                '<span class="toggle-label ' + (row.should_trigger ? 'inactive' : 'active') + '" id="labelOff-' + index + '">No</span>' +
+                '<label class="toggle">' +
+                    '<input type="checkbox" ' + (row.should_trigger ? 'checked' : '') +
+                    ' onchange="toggleTrigger(' + index + ', this.checked)">' +
+                    '<span class="toggle-track"></span>' +
+                    '<span class="toggle-thumb"></span>' +
+                '</label>' +
+                '<span class="toggle-label ' + (row.should_trigger ? 'active' : 'inactive') + '" id="labelOn-' + index + '">Yes</span>' +
+            '</div>' +
+        '</td>' +
+        '<td class="col-actions">' +
+            '<button class="btn-icon btn-delete" onclick="deleteRow(' + index + ')" title="Delete query">&#10005;</button>' +
+        '</td>';
+}
+
+function updateQuery(index, value) {
+    rows[index].query = value;
+}
+
+function toggleTrigger(index, checked) {
+    rows[index].should_trigger = checked;
+    renderTable();
+    updateStats();
+}
+
+function addRow() {
+    rows.push({ query: '', should_trigger: true });
+    renderTable();
+    updateStats();
+    focusLastRow();
+}
+
+function addMultipleRows(count) {
+    for (var i = 0; i < count; i++) {
+        rows.push({ query: '', should_trigger: true });
+    }
+    renderTable();
+    updateStats();
+    focusLastRow();
+}
+
+function deleteRow(index) {
+    rows.splice(index, 1);
+    renderTable();
+    updateStats();
+}
+
+function focusLastRow() {
+    var textareas = document.querySelectorAll('.query-textarea');
+    if (textareas.length > 0) {
+        textareas[textareas.length - 1].focus();
+    }
+}
+
+function updateStats() {
+    var total = rows.length;
+    var trigger = rows.filter(function(r) { return r.should_trigger; }).length;
+    var noTrigger = total - trigger;
+    var filled = rows.filter(function(r) { return r.query.trim().length > 0; }).length;
+
+    document.getElementById('statsDisplay').innerHTML =
+        '<strong>' + total + '</strong> queries &middot; ' +
+        '<strong>' + trigger + '</strong> trigger &middot; ' +
+        '<strong>' + noTrigger + '</strong> no-trigger &middot; ' +
+        '<strong>' + filled + '</strong> filled';
+}
+
+function exportEvalSet() {
+    var data = rows.map(function(row) {
+        return {
+            query: row.query,
+            should_trigger: row.should_trigger
+        };
+    });
+
+    var json = JSON.stringify(data, null, 2);
+    var blob = new Blob([json], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'eval_set.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eval Viewer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #faf9f5;
+            --surface: #ffffff;
+            --text: #141413;
+            --text-secondary: #5c5a54;
+            --border: #e8e6dc;
+            --accent: #d97757;
+            --accent-light: #f0ddd4;
+            --green: #788c5d;
+            --green-light: #f5f8f2;
+            --red: #c44;
+            --red-light: #fef2f2;
+            --blue: #6a9bcc;
+            --blue-light: #f0f6fc;
+            --font-display: 'Poppins', sans-serif;
+            --font-body: 'Lora', serif;
+            --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+            --sidebar-width: 280px;
+            --header-height: 56px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-display);
+            font-weight: 600;
+        }
+
+        button {
+            font-family: var(--font-display);
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: inherit;
+        }
+
+        textarea {
+            font-family: var(--font-body);
+            resize: vertical;
+        }
+
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 16px;
+        }
+
+        .app-header h1 {
+            font-size: 16px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .app-header .skill-name {
+            color: var(--accent);
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .header-nav button {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: var(--bg);
+            border: 1px solid var(--border);
+            transition: all 0.15s ease;
+        }
+
+        .header-nav button:hover:not(:disabled) {
+            background: var(--accent-light);
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .header-nav button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .header-nav .run-counter {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-family: var(--font-display);
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .app-layout {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            min-width: var(--sidebar-width);
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-section {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-section h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .run-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .run-item {
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: var(--font-display);
+            font-weight: 400;
+            color: var(--text-secondary);
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .run-item:hover {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .run-item.active {
+            background: var(--accent-light);
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .run-item .run-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .run-item .run-status.passed { background: var(--green); }
+        .run-item .run-status.failed { background: var(--red); }
+        .run-item .run-status.graded { background: var(--blue); }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tab-bar {
+            display: flex;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 0 20px;
+            gap: 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .tab-bar button {
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s ease;
+        }
+
+        .tab-bar button:hover {
+            color: var(--text);
+        }
+
+        .tab-bar button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .tab-panel {
+            display: none;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        .prompt-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+        }
+
+        .prompt-card h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .prompt-card .prompt-text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .output-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .output-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            font-family: var(--font-display);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .output-card-header .filename {
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .output-card-header .file-type {
+            font-size: 11px;
+            color: var(--text-secondary);
+            background: var(--surface);
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .output-card-body {
+            padding: 16px;
+        }
+
+        .output-card-body pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .output-card-body img {
+            max-width: 100%;
+            border-radius: 4px;
+        }
+
+        .output-card-body iframe,
+        .output-card-body embed {
+            width: 100%;
+            min-height: 500px;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .output-card-body .binary-download {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg);
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .output-card-body .binary-download a {
+            color: var(--accent);
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-weight: 500;
+        }
+
+        .output-card-body .binary-download a:hover {
+            text-decoration: underline;
+        }
+
+        .grading-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .grading-card h3 {
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .grading-summary {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .grading-stat {
+            background: var(--bg);
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-family: var(--font-display);
+            font-size: 14px;
+        }
+
+        .grading-stat strong {
+            color: var(--accent);
+        }
+
+        .grading-expectations {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .grading-expectations li {
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .grading-expectations li.pass {
+            background: var(--green-light);
+            color: var(--green);
+        }
+
+        .grading-expectations li.fail {
+            background: var(--red-light);
+            color: var(--red);
+        }
+
+        .grading-expectations li .icon {
+            flex-shrink: 0;
+            font-weight: 700;
+        }
+
+        .feedback-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .feedback-section h3 {
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .feedback-section textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.5;
+            background: var(--bg);
+            color: var(--text);
+            transition: border-color 0.15s ease;
+        }
+
+        .feedback-section textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .feedback-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .btn-save {
+            padding: 8px 20px;
+            background: var(--accent);
+            color: white;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 13px;
+            transition: opacity 0.15s ease;
+        }
+
+        .btn-save:hover {
+            opacity: 0.9;
+        }
+
+        .btn-save:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .save-status {
+            font-size: 13px;
+            font-family: var(--font-display);
+            color: var(--green);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .save-status.visible {
+            opacity: 1;
+        }
+
+        .previous-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .previous-section h3 {
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .previous-feedback {
+            background: var(--blue-light);
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--blue);
+        }
+
+        .benchmark-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            font-size: 13px;
+        }
+
+        .benchmark-table th,
+        .benchmark-table td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .benchmark-table th {
+            background: var(--text);
+            color: var(--bg);
+            font-family: var(--font-display);
+            font-weight: 500;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .benchmark-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .benchmark-table tr:hover td {
+            background: var(--bg);
+        }
+
+        .benchmark-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .benchmark-metric {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .benchmark-metric .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            font-family: var(--font-display);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .benchmark-metric .value {
+            font-size: 24px;
+            font-weight: 700;
+            font-family: var(--font-display);
+        }
+
+        .benchmark-metric .value.positive { color: var(--green); }
+        .benchmark-metric .value.negative { color: var(--red); }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .run-meta {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .run-meta .tag {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: var(--font-display);
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .app-layout { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-header">
+    <h1><span class="skill-name" id="headerSkillName"></span> Eval Viewer</h1>
+    <div class="header-nav">
+        <button id="btnPrev" onclick="navigateRun(-1)">&#8592; Prev</button>
+        <span class="run-counter" id="runCounter"></span>
+        <button id="btnNext" onclick="navigateRun(1)">Next &#8594;</button>
+    </div>
+</div>
+
+<div class="app-layout">
+    <div class="sidebar">
+        <div class="sidebar-section">
+            <h3>Runs</h3>
+            <ul class="run-list" id="runList"></ul>
+        </div>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <div class="tab-bar">
+            <button class="active" onclick="switchTab('outputs')">Outputs</button>
+            <button onclick="switchTab('grading')">Grading</button>
+            <button onclick="switchTab('benchmark')">Benchmark</button>
+            <button onclick="switchTab('previous')">Previous</button>
+        </div>
+
+        <div class="tab-panel active" id="tab-outputs">
+            <div id="outputsContent">
+                <div class="empty-state">
+                    <h3>No run selected</h3>
+                    <p>Select a run from the sidebar to view its outputs.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="tab-grading">
+            <div id="gradingContent">
+                <div class="empty-state">
+                    <h3>No grading data</h3>
+                    <p>Select a run with grading data to view results.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="tab-benchmark">
+            <div id="benchmarkContent">
+                <div class="empty-state">
+                    <h3>No benchmark data</h3>
+                    <p>No benchmark data available for this workspace.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="tab-previous">
+            <div id="previousContent">
+                <div class="empty-state">
+                    <h3>No previous iteration</h3>
+                    <p>No previous iteration data available for comparison.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+/*__EMBEDDED_DATA__*/
+
+let currentRunIndex = 0;
+let feedbackData = { reviews: [] };
+
+function init() {
+    if (typeof EMBEDDED_DATA === 'undefined') return;
+
+    document.getElementById('headerSkillName').textContent = EMBEDDED_DATA.skill_name || '';
+    buildRunList();
+    loadFeedback();
+
+    if (EMBEDDED_DATA.runs && EMBEDDED_DATA.runs.length > 0) {
+        selectRun(0);
+    }
+
+    if (EMBEDDED_DATA.benchmark) {
+        renderBenchmark();
+    }
+}
+
+function buildRunList() {
+    const list = document.getElementById('runList');
+    list.innerHTML = '';
+
+    if (!EMBEDDED_DATA.runs || EMBEDDED_DATA.runs.length === 0) {
+        list.innerHTML = '<li class="run-item" style="cursor:default;color:var(--text-secondary)">No runs found</li>';
+        return;
+    }
+
+    EMBEDDED_DATA.runs.forEach(function(run, index) {
+        const li = document.createElement('li');
+        li.className = 'run-item';
+        li.onclick = function() { selectRun(index); };
+
+        let statusClass = '';
+        if (run.grading) {
+            const summary = run.grading.summary || {};
+            if (summary.pass_rate !== undefined) {
+                statusClass = summary.pass_rate >= 1.0 ? 'passed' : (summary.pass_rate > 0 ? 'graded' : 'failed');
+            } else if (summary.passed !== undefined && summary.total !== undefined) {
+                statusClass = summary.passed === summary.total ? 'passed' : (summary.passed > 0 ? 'graded' : 'failed');
+            }
+        }
+
+        const statusDot = statusClass ? '<span class="run-status ' + statusClass + '"></span>' : '';
+        li.innerHTML = statusDot + '<span>' + escapeHtml(run.id) + '</span>';
+        list.appendChild(li);
+    });
+}
+
+function selectRun(index) {
+    currentRunIndex = index;
+    const runs = EMBEDDED_DATA.runs;
+    if (!runs || index < 0 || index >= runs.length) return;
+
+    document.querySelectorAll('.run-item').forEach(function(item, i) {
+        item.classList.toggle('active', i === index);
+    });
+
+    document.getElementById('runCounter').textContent = (index + 1) + ' / ' + runs.length;
+    document.getElementById('btnPrev').disabled = index === 0;
+    document.getElementById('btnNext').disabled = index === runs.length - 1;
+
+    renderOutputs(runs[index]);
+    renderGrading(runs[index]);
+    renderPrevious(runs[index]);
+    loadFeedbackForRun(runs[index].id);
+}
+
+function navigateRun(delta) {
+    const newIndex = currentRunIndex + delta;
+    if (newIndex >= 0 && newIndex < EMBEDDED_DATA.runs.length) {
+        selectRun(newIndex);
+    }
+}
+
+function switchTab(tabName) {
+    document.querySelectorAll('.tab-bar button').forEach(function(btn) {
+        btn.classList.toggle('active', btn.textContent.toLowerCase() === tabName);
+    });
+    document.querySelectorAll('.tab-panel').forEach(function(panel) {
+        panel.classList.toggle('active', panel.id === 'tab-' + tabName);
+    });
+}
+
+function renderOutputs(run) {
+    const container = document.getElementById('outputsContent');
+
+    if (!run.outputs || run.outputs.length === 0) {
+        container.innerHTML = '<div class="empty-state"><h3>No outputs</h3><p>This run has no output files.</p></div>';
+        return;
+    }
+
+    let html = '';
+
+    html += '<div class="prompt-card">';
+    html += '<h3>Eval Prompt</h3>';
+    html += '<div class="prompt-text">' + escapeHtml(run.prompt) + '</div>';
+    html += '</div>';
+
+    html += '<div class="run-meta">';
+    html += '<span class="tag">Run: ' + escapeHtml(run.id) + '</span>';
+    if (run.eval_id !== null && run.eval_id !== undefined) {
+        html += '<span class="tag">Eval: ' + run.eval_id + '</span>';
+    }
+    html += '<span class="tag">Outputs: ' + run.outputs.length + '</span>';
+    html += '</div>';
+
+    run.outputs.forEach(function(output) {
+        html += '<div class="output-card">';
+        html += '<div class="output-card-header">';
+        html += '<span class="filename">' + escapeHtml(output.name) + '</span>';
+        html += '<span class="file-type">' + escapeHtml(output.type) + '</span>';
+        html += '</div>';
+        html += '<div class="output-card-body">';
+
+        if (output.type === 'text') {
+            html += '<pre>' + escapeHtml(output.content) + '</pre>';
+        } else if (output.type === 'image') {
+            html += '<img src="' + output.data_uri + '" alt="' + escapeHtml(output.name) + '" loading="lazy">';
+        } else if (output.type === 'pdf') {
+            html += '<embed src="' + output.data_uri + '" type="application/pdf" width="100%" height="600px">';
+        } else if (output.type === 'binary') {
+            html += '<div class="binary-download">';
+            html += '<span>&#128196;</span>';
+            html += '<a href="' + output.data_uri + '" download="' + escapeHtml(output.name) + '">Download ' + escapeHtml(output.name) + '</a>';
+            html += '<span style="color:var(--text-secondary);font-size:12px;font-family:var(--font-display)">' + escapeHtml(output.mime || '') + '</span>';
+            html += '</div>';
+        } else if (output.type === 'error') {
+            html += '<pre style="background:var(--red-light);color:var(--red);border:1px solid var(--red)">' + escapeHtml(output.content) + '</pre>';
+        }
+
+        html += '</div></div>';
+    });
+
+    html += '<div class="feedback-section">';
+    html += '<h3>Feedback</h3>';
+    html += '<textarea id="feedbackTextarea" placeholder="Enter feedback for this run..." oninput="autoSaveFeedback()"></textarea>';
+    html += '<div class="feedback-actions">';
+    html += '<button class="btn-save" id="btnSaveFeedback" onclick="saveFeedback()">Save Feedback</button>';
+    html += '<span class="save-status" id="saveStatus">Saved</span>';
+    html += '</div>';
+    html += '</div>';
+
+    container.innerHTML = html;
+}
+
+function renderGrading(run) {
+    const container = document.getElementById('gradingContent');
+
+    if (!run.grading) {
+        container.innerHTML = '<div class="empty-state"><h3>No grading data</h3><p>This run does not have grading results.</p></div>';
+        return;
+    }
+
+    const grading = run.grading;
+    const summary = grading.summary || {};
+    let html = '<div class="grading-card">';
+    html += '<h3>Grading Results</h3>';
+
+    html += '<div class="grading-summary">';
+    if (summary.pass_rate !== undefined) {
+        html += '<div class="grading-stat">Pass Rate: <strong>' + (summary.pass_rate * 100).toFixed(1) + '%</strong></div>';
+    }
+    if (summary.passed !== undefined) {
+        html += '<div class="grading-stat">Passed: <strong>' + summary.passed + '</strong></div>';
+    }
+    if (summary.failed !== undefined) {
+        html += '<div class="grading-stat">Failed: <strong>' + summary.failed + '</strong></div>';
+    }
+    if (summary.total !== undefined) {
+        html += '<div class="grading-stat">Total: <strong>' + summary.total + '</strong></div>';
+    }
+    html += '</div>';
+
+    if (grading.expectations && grading.expectations.length > 0) {
+        html += '<ul class="grading-expectations">';
+        grading.expectations.forEach(function(exp) {
+            const passed = exp.passed || exp.pass;
+            const cls = passed ? 'pass' : 'fail';
+            const icon = passed ? '&#10003;' : '&#10007;';
+            html += '<li class="' + cls + '">';
+            html += '<span class="icon">' + icon + '</span>';
+            html += '<span>' + escapeHtml(exp.description || exp.name || JSON.stringify(exp)) + '</span>';
+            html += '</li>';
+        });
+        html += '</ul>';
+    }
+
+    if (grading.user_notes_summary) {
+        const notes = grading.user_notes_summary;
+        const sections = [
+            { key: 'uncertainties', label: 'Uncertainties' },
+            { key: 'needs_review', label: 'Needs Review' },
+            { key: 'workarounds', label: 'Workarounds' }
+        ];
+        sections.forEach(function(section) {
+            if (notes[section.key] && notes[section.key].length > 0) {
+                html += '<div style="margin-top:12px">';
+                html += '<h4 style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">' + section.label + '</h4>';
+                notes[section.key].forEach(function(note) {
+                    html += '<div style="font-size:13px;padding:6px 0;color:var(--text-secondary)">&bull; ' + escapeHtml(note) + '</div>';
+                });
+                html += '</div>';
+            }
+        });
+    }
+
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+function renderBenchmark() {
+    const container = document.getElementById('benchmarkContent');
+
+    if (!EMBEDDED_DATA.benchmark) {
+        container.innerHTML = '<div class="empty-state"><h3>No benchmark data</h3><p>No benchmark data available for this workspace.</p></div>';
+        return;
+    }
+
+    const benchmark = EMBEDDED_DATA.benchmark;
+    const runSummary = benchmark.run_summary || {};
+    const configs = Object.keys(runSummary).filter(function(k) { return k !== 'delta'; });
+    const delta = runSummary.delta || {};
+
+    let html = '';
+
+    if (benchmark.metadata) {
+        html += '<div class="prompt-card">';
+        html += '<h3>Benchmark Metadata</h3>';
+        html += '<div style="font-size:13px;font-family:var(--font-display);display:flex;flex-wrap:wrap;gap:16px">';
+        if (benchmark.metadata.skill_name) {
+            html += '<span>Skill: <strong>' + escapeHtml(benchmark.metadata.skill_name) + '</strong></span>';
+        }
+        if (benchmark.metadata.timestamp) {
+            html += '<span>Date: <strong>' + escapeHtml(benchmark.metadata.timestamp) + '</strong></span>';
+        }
+        if (benchmark.metadata.evals_run) {
+            html += '<span>Evals: <strong>' + benchmark.metadata.evals_run.join(', ') + '</strong></span>';
+        }
+        html += '</div></div>';
+    }
+
+    html += '<div class="benchmark-summary">';
+    html += renderBenchmarkMetric('Pass Rate Delta', delta.pass_rate);
+    html += renderBenchmarkMetric('Time Delta', delta.time_seconds ? delta.time_seconds + 's' : '');
+    html += renderBenchmarkMetric('Token Delta', delta.tokens);
+    html += '</div>';
+
+    configs.forEach(function(config) {
+        const stats = runSummary[config] || {};
+        const label = config.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+
+        html += '<h3 style="font-size:14px;margin-bottom:12px;margin-top:20px;font-family:var(--font-display)">' + escapeHtml(label) + '</h3>';
+        html += '<table class="benchmark-table"><thead><tr>';
+        html += '<th>Metric</th><th>Mean</th><th>Std Dev</th><th>Min</th><th>Max</th>';
+        html += '</tr></thead><tbody>';
+
+        ['pass_rate', 'time_seconds', 'tokens'].forEach(function(metric) {
+            const m = stats[metric] || {};
+            html += '<tr>';
+            html += '<td style="font-family:var(--font-display);font-weight:500">' + escapeHtml(metric.replace(/_/g, ' ')) + '</td>';
+            html += '<td>' + (m.mean !== undefined ? m.mean : '-') + '</td>';
+            html += '<td>' + (m.stddev !== undefined ? m.stddev : '-') + '</td>';
+            html += '<td>' + (m.min !== undefined ? m.min : '-') + '</td>';
+            html += '<td>' + (m.max !== undefined ? m.max : '-') + '</td>';
+            html += '</tr>';
+        });
+
+        html += '</tbody></table>';
+    });
+
+    if (benchmark.runs && benchmark.runs.length > 0) {
+        html += '<h3 style="font-size:14px;margin-bottom:12px;margin-top:24px;font-family:var(--font-display)">Individual Runs</h3>';
+        html += '<table class="benchmark-table"><thead><tr>';
+        html += '<th>Eval</th><th>Config</th><th>Run</th><th>Pass Rate</th><th>Time</th><th>Tokens</th>';
+        html += '</tr></thead><tbody>';
+
+        benchmark.runs.forEach(function(run) {
+            html += '<tr>';
+            html += '<td>' + (run.eval_id !== undefined ? run.eval_id : '-') + '</td>';
+            html += '<td>' + escapeHtml(run.configuration || '') + '</td>';
+            html += '<td>' + (run.run_number || '-') + '</td>';
+            const r = run.result || {};
+            html += '<td>' + (r.pass_rate !== undefined ? (r.pass_rate * 100).toFixed(1) + '%' : '-') + '</td>';
+            html += '<td>' + (r.time_seconds !== undefined ? r.time_seconds.toFixed(1) + 's' : '-') + '</td>';
+            html += '<td>' + (r.tokens !== undefined ? r.tokens : '-') + '</td>';
+            html += '</tr>';
+        });
+
+        html += '</tbody></table>';
+    }
+
+    container.innerHTML = html;
+}
+
+function renderBenchmarkMetric(label, value) {
+    if (!value) return '';
+    const strVal = String(value);
+    const isPositive = strVal.startsWith('+') && !strVal.includes('-');
+    const cls = isPositive ? 'positive' : (strVal.includes('-') ? 'negative' : '');
+    return '<div class="benchmark-metric">' +
+        '<div class="label">' + escapeHtml(label) + '</div>' +
+        '<div class="value ' + cls + '">' + escapeHtml(strVal) + '</div>' +
+        '</div>';
+}
+
+function renderPrevious(run) {
+    const container = document.getElementById('previousContent');
+
+    if (!EMBEDDED_DATA.previous_feedback && !EMBEDDED_DATA.previous_outputs) {
+        container.innerHTML = '<div class="empty-state"><h3>No previous iteration</h3><p>No previous iteration data available for comparison.</p></div>';
+        return;
+    }
+
+    let html = '';
+    const prevFeedback = (EMBEDDED_DATA.previous_feedback || {})[run.id];
+    const prevOutputs = (EMBEDDED_DATA.previous_outputs || {})[run.id];
+
+    if (!prevFeedback && (!prevOutputs || prevOutputs.length === 0)) {
+        container.innerHTML = '<div class="empty-state"><h3>No previous data for this run</h3><p>This run does not have data from a previous iteration.</p></div>';
+        return;
+    }
+
+    html += '<div class="previous-section">';
+    html += '<h3>Previous Iteration: ' + escapeHtml(run.id) + '</h3>';
+
+    if (prevFeedback) {
+        html += '<div class="previous-feedback">';
+        html += '<strong style="font-family:var(--font-display);font-size:12px;display:block;margin-bottom:4px">Previous Feedback</strong>';
+        html += escapeHtml(prevFeedback);
+        html += '</div>';
+    }
+
+    if (prevOutputs && prevOutputs.length > 0) {
+        html += '<h4 style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.05em;margin:16px 0 8px;font-family:var(--font-display);font-weight:600">Previous Outputs</h4>';
+        prevOutputs.forEach(function(output) {
+            html += '<div class="output-card">';
+            html += '<div class="output-card-header">';
+            html += '<span class="filename">' + escapeHtml(output.name) + '</span>';
+            html += '<span class="file-type">' + escapeHtml(output.type) + '</span>';
+            html += '</div>';
+            html += '<div class="output-card-body">';
+
+            if (output.type === 'text') {
+                html += '<pre>' + escapeHtml(output.content) + '</pre>';
+            } else if (output.type === 'image') {
+                html += '<img src="' + output.data_uri + '" alt="' + escapeHtml(output.name) + '" loading="lazy">';
+            } else if (output.type === 'pdf') {
+                html += '<embed src="' + output.data_uri + '" type="application/pdf" width="100%" height="600px">';
+            } else if (output.type === 'binary') {
+                html += '<div class="binary-download">';
+                html += '<span>&#128196;</span>';
+                html += '<a href="' + output.data_uri + '" download="' + escapeHtml(output.name) + '">Download ' + escapeHtml(output.name) + '</a>';
+                html += '</div>';
+            }
+
+            html += '</div></div>';
+        });
+    }
+
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+function loadFeedback() {
+    fetch('/api/feedback')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data && data.reviews) {
+                feedbackData = data;
+            }
+        })
+        .catch(function() {
+            feedbackData = { reviews: [] };
+        });
+}
+
+function loadFeedbackForRun(runId) {
+    const textarea = document.getElementById('feedbackTextarea');
+    if (!textarea) return;
+
+    const existing = feedbackData.reviews.find(function(r) { return r.run_id === runId; });
+    textarea.value = existing ? existing.feedback : '';
+}
+
+let autoSaveTimer = null;
+
+function autoSaveFeedback() {
+    if (autoSaveTimer) clearTimeout(autoSaveTimer);
+    autoSaveTimer = setTimeout(saveFeedback, 1500);
+}
+
+function saveFeedback() {
+    if (!EMBEDDED_DATA.runs || EMBEDDED_DATA.runs.length === 0) return;
+
+    const run = EMBEDDED_DATA.runs[currentRunIndex];
+    const textarea = document.getElementById('feedbackTextarea');
+    if (!textarea || !run) return;
+
+    const feedback = textarea.value.trim();
+    const existingIdx = feedbackData.reviews.findIndex(function(r) { return r.run_id === run.id; });
+
+    if (existingIdx >= 0) {
+        if (feedback) {
+            feedbackData.reviews[existingIdx].feedback = feedback;
+        } else {
+            feedbackData.reviews.splice(existingIdx, 1);
+        }
+    } else if (feedback) {
+        feedbackData.reviews.push({ run_id: run.id, feedback: feedback });
+    }
+
+    const status = document.getElementById('saveStatus');
+    const btn = document.getElementById('btnSaveFeedback');
+    btn.disabled = true;
+
+    fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(feedbackData)
+    })
+    .then(function(r) { return r.json(); })
+    .then(function() {
+        status.classList.add('visible');
+        btn.disabled = false;
+        setTimeout(function() { status.classList.remove('visible'); }, 2000);
+    })
+    .catch(function() {
+        btn.disabled = false;
+    });
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+document.addEventListener('DOMContentLoaded', init);
+
+document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        navigateRun(-1);
+    } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        navigateRun(1);
+    }
+});
+</script>
+
+</body>
+</html>
