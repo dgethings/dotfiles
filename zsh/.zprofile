@@ -1,16 +1,10 @@
 export EDITOR='nvim'
 export BUN_INSTALL="$HOME/.bun"
-export PATH="${BUN_INSTALL}/bin:${PATH}:${HOME}/.cargo/bin:${HOME}/.local/bin:/Applications/Obsidian.app/Contents/MacOS"
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
     --color=fg:#e5e9f0,bg:#3b4252,hl:#81a1c1
     --color=fg+:#e5e9f0,bg+:#3b4252,hl+:#81a1c1
     --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
     --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
-export VAULT_PATH="/Users/dgethings/Library/Mobile Documents/iCloud~md~obsidian/Documents/Main"
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/dgethings/.lmstudio/bin"
-# End of LM Studio CLI section
 
 # bun completions
 [ -s "/Users/dgethings/.bun/_bun" ] && source "/Users/dgethings/.bun/_bun"

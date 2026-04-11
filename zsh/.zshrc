@@ -94,4 +94,7 @@ zstyle :omz:plugins:ssh-agent identities ~/.ssh/id_ed25519
 
 zinit snippet ~/.zinit/tmux-sesh/sesh.zsh
 
+# OpenClaw Completion
+source "/Users/dgethings/.openclaw/completions/openclaw.zsh"
 
+export PATH="${BUN_INSTALL}/bin:${PATH}:${HOME}/.cargo/bin:${HOME}/.local/bin:/Applications/Obsidian.app/Contents/MacOS:${HOME}/.lmstudio/bin"
