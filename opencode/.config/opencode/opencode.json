@@ -1,10 +1,10 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "lsp": {
-    "basedpyright": {
+    "ruff": {
       "command": [
-        "basedpyright-langserver",
-        "--stdio"
+        "ruff",
+        "server"
       ],
       "extensions": [
         ".py"
@@ -22,7 +22,7 @@
     "ty": {
       "command": [
         "ty",
-        "check"
+        "server"
       ],
       "extensions": [
         ".py"
