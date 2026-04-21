@@ -24,13 +24,13 @@ palette = 'nord'
 [custom.prog_ver_start]
 style = "fg:nord9 bg:none"
 symbol = ""
-detect_files = ["pyproject.toml", ".python-version", "go.mod", "package.json"]
+when = "ls $(git rev-parse --show-toplevel)/pyproject.toml"
 
 
 [custom.prog_ver_end]
 style = "fg:nord9 bg:none"
 symbol = ""
-detect_files = ["pyproject.toml", ".python-version", "go.mod", "package.json"]
+when = "ls $(git rev-parse --show-toplevel)/pyproject.toml"
 
 [cmd_duration]
 style = "fg:nord9 bg:none"
