@@ -1,0 +1,65 @@
+{
+  "expectations": [
+    {
+      "text": "The agent uses the `of` CLI to look up real flagged tasks",
+      "passed": true,
+      "evidence": "raw_output.txt shows structured JSON output from OmniFocus CLI queries (e.g., flagged tasks returning '[]', overdue tasks with JSON objects containing name/project/due/flagged fields, inbox count, tagged 'next' tasks, and inbox items). The data structure (JSON arrays with OmniFocus-native fields like 'flagged', project names, due dates) is consistent with `of` CLI output."
+    },
+    {
+      "text": "The output includes actual task names from the user's OmniFocus database",
+      "passed": true,
+      "evidence": "response.md contains specific task names: 'submit tax return', 'Process inbox', 'Find stick on video doorbell for Suzy', 'pay HSBC credit card', 'sort contact len subscription', 'Book service and MOT for BMW', 'renew home insurance', 'Arrange gas fire service'. raw_output.txt additionally shows inbox items like 'Review pension reports', 'Fwd: Council Tax Bill', 'Create repository of run books', 'See if saif can take over running solar winds', 'Sort Suzy\\'s emirates id', 'Movies to watch', 'Sort out what to do about broadband'."
+    },
+    {
+      "text": "The agent does not make up or fabricate task data",
+      "passed": true,
+      "evidence": "The raw_output.txt file contains structured machine-readable JSON output that is characteristic of CLI tool output, not human-written text. The tasks include specific, idiosyncratic names (e.g., 'Find stick on video doorbell for Suzy', 'See if saif can take over running solar winds', 'Put together a program for angentic network engineer') with exact timestamps and project assignments that would be impossible to fabricate convincingly. The data is internally consistent across sections (same tasks appear in overdue, due-soon, and tagged sections)."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {},
+  "timing": {},
+  "claims": [
+    {
+      "claim": "You have no flagged tasks",
+      "verified": true,
+      "evidence": "raw_output.txt line 1-3: '=== FLAGGED TASKS ===' followed by '[]' and '(0 flagged tasks)'"
+    },
+    {
+      "claim": "There are 2 overdue tasks",
+      "verified": true,
+      "evidence": "raw_output.txt lines 5-7 show exactly 2 JSON entries with due dates before 12 Apr 2026"
+    },
+    {
+      "claim": "'Find stick on video doorbell for Suzy' is due today (12 Apr 2026)",
+      "verified": true,
+      "evidence": "raw_output.txt line 10: due date is '2026-04-12T13:00:00.000Z'"
+    },
+    {
+      "claim": "Inbox has 9 items",
+      "verified": true,
+      "evidence": "raw_output.txt line 15: '{\"count\": 9}', and lines 37-45 list exactly 9 inbox items"
+    },
+    {
+      "claim": "'Arrange gas fire service' has no due date",
+      "verified": true,
+      "evidence": "raw_output.txt line 33: '{\"name\":\"Arrange gas fire service\",\"project\":\"Chores\",\"due\":null,\"tags\":[\"next\"]}'"
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [
+      "All three expectations are quite easy to satisfy even by an agent that runs `of` commands but produces a poor response. An assertion checking the quality/usefulness of the final response would be more discriminating — e.g., 'The agent correctly prioritizes overdue tasks over future tasks' or 'The agent reports that there are zero flagged tasks rather than fabricating flagged tasks'."
+    ],
+    "overall": "All expectations pass. The evals verify that the CLI was used and real data was returned, but they don't test whether the agent interpreted the data well (e.g., correctly noting zero flagged tasks instead of making them up, or prioritizing overdue items). Adding a more discriminating assertion would strengthen this eval."
+  }
+}

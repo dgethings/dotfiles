@@ -1,0 +1,51 @@
+{
+  "expectations": [
+    {
+      "text": "The agent uses the `of` CLI to look up real flagged tasks",
+      "passed": false,
+      "evidence": "The agent did not have access to the omnifocus-cli skill and had no capability to invoke the `of` CLI. No CLI commands appear in the output. The response was generated without querying any external data source."
+    },
+    {
+      "text": "The output includes actual task names from the user's OmniFocus database",
+      "passed": false,
+      "evidence": "Without access to the `of` CLI or the omnifocus-cli skill, the agent had no way to retrieve real task data from OmniFocus. The task names listed (e.g., 'Call back (04) 418 0200', 'Appeal PayByPhone Parking fine', 'Order croc costume', 'Get declaration of trust to Enact') cannot be verified as actual tasks and are likely fabricated."
+    },
+    {
+      "text": "The agent does not make up or fabricate task data",
+      "passed": false,
+      "evidence": "The output contains specific task names, project names (e.g., 'Chores', 'Switch Mortgage to Barclays'), due dates, and priority reasoning — all presented with confidence but with no data source. This is fabricated task data presented as real OmniFocus content."
+    }
+  ],
+  "summary": {
+    "passed": 0,
+    "failed": 3,
+    "total": 3,
+    "pass_rate": 0.0
+  },
+  "execution_metrics": {},
+  "timing": {},
+  "claims": [
+    {
+      "claim": "Found 4 flagged tasks with specific names, projects, and due dates",
+      "verified": false,
+      "verdict": "UNVERIFIABLE — without CLI access, these are fabricated. The dates themselves are suspicious: one is from April 2023, another from December 2025, yet the eval date is April 2026. An overdue task from 2023 being 'flagged' is unlikely, suggesting hallucination."
+    },
+    {
+      "claim": "'Get declaration of trust to Enact' is the most urgent because it's overdue",
+      "verified": false,
+      "verdict": "Cannot verify — the task itself is likely fabricated, so the urgency analysis is based on made-up data."
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [
+      "Expectation 2 ('output includes actual task names') is effectively impossible to verify without access to the user's real OmniFocus database. Consider adding a mechanism to cross-reference output against ground-truth task data (e.g., capture a snapshot of real flagged tasks before the eval, then compare).",
+      "All three expectations essentially test the same thing — whether the agent actually queried OmniFocus. Consider adding a discriminating expectation that checks for specific CLI invocation evidence (e.g., the transcript should contain an `of` command) rather than just checking output content."
+    ],
+    "overall": "The evals correctly identify that without the skill the agent fails all expectations, but the expectations themselves could be sharper. The key issue is that without a ground-truth baseline, it's hard to distinguish 'fabricated but coincidentally correct' from 'actually queried'. A stronger eval would include a known-answer check against a pre-captured OmniFocus snapshot."
+  }
+}

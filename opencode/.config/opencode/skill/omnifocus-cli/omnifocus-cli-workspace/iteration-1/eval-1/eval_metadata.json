@@ -1,0 +1,11 @@
+{
+  "eval_id": 1,
+  "eval_name": "workload-summary",
+  "prompt": "I need a summary of my current workload. What projects still have remaining tasks, and how many tasks are left in each?",
+  "assertions": [
+    "The agent queries OmniFocus project data using the `of` CLI",
+    "The output lists real project names from the user's database",
+    "The output includes remaining task counts per project",
+    "The agent filters to projects that still have work remaining"
+  ]
+}

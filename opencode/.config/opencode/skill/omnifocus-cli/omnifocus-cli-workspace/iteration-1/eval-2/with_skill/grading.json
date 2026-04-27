@@ -1,0 +1,58 @@
+{
+  "expectations": [
+    {
+      "text": "The agent uses `of search` to find Dubai-related items",
+      "passed": true,
+      "evidence": "raw_output.txt line 1 shows '=== of search \"Dubai\" ===', followed by structured JSON results containing 3 matching tasks. The agent also followed up with `of project ls` to find folder-level projects and `of task ls --project` to drill into specific projects."
+    },
+    {
+      "text": "The output contains real matching task or project names",
+      "passed": true,
+      "evidence": "The response includes specific OmniFocus items: tasks like 'Review pension reports', 'Things to sort in Dubai', 'AI Engineer freelancing starter kit', and projects like 'Things to sort before selling the house', 'Sort Will'. These come with structured metadata (IDs, status, task counts, due dates) consistent with real OmniFocus data, not fabricated content."
+    },
+    {
+      "text": "The agent reports what it found rather than guessing or making up results",
+      "passed": true,
+      "evidence": "The raw_output.txt contains actual CLI command output with structured JSON responses. The response.md faithfully summarizes these results — e.g., reporting 3 tasks found via full-text search, 3 projects in the 'Dubai move' folder, and 5 remaining tasks in the 'Things to sort in Dubai' project. The agent accurately reflects the data: task counts match (21 total, 5 remaining), due dates and tags are preserved, and the agent even notes gaps honestly (e.g., 'No tasks returned by of task ls for this project — likely all 4 remaining are the project group header')."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {},
+  "timing": {},
+  "claims": [
+    {
+      "claim": "'Review pension reports' note mentions Thomas Goldie at Hoxton Wealth on Sheikh Zayed Road, Dubai",
+      "verdict": "verified",
+      "evidence": "raw_output.txt line 6 contains the full note text including 'thomas.goldie@hoxtonwealth.com' and GST timezone reference, confirming Dubai connection."
+    },
+    {
+      "claim": "'AI Engineer freelancing starter kit' note references Dubai",
+      "verdict": "verified",
+      "evidence": "raw_output.txt line 38: \"Let's see what Dubai is like, that might be doable\""
+    },
+    {
+      "claim": "'Things to sort before selling the house' has 13 tasks, 1 remaining",
+      "verdict": "verified",
+      "evidence": "raw_output.txt lines 57-61: taskCount 13, remainingCount 1"
+    },
+    {
+      "claim": "'Sort Will' has 4 remaining tasks but none returned by task ls",
+      "verdict": "verified",
+      "evidence": "raw_output.txt line 73-78 shows remainingCount 4; no task ls output for this project in the file. Agent notes this may be due to project group headers."
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "Strong eval with clear, discriminating assertions. All three expectations test distinct aspects of the skill's behavior (command usage, data authenticity, non-hallucination) and all were meaningfully satisfied. No gaps identified."
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "expectations": [
+    {
+      "text": "The agent queries OmniFocus project data using the `of` CLI",
+      "passed": false,
+      "evidence": "No evidence of `of` CLI usage. There is no raw_output.txt or command traces in the without_skill outputs directory. The agent did not have the omnifocus-cli skill and the output is a formatted markdown file (response.md), not CLI output. The with_skill execution produced raw_output.txt showing `of task stats` and `of project ls` commands were run; no equivalent evidence exists for the without_skill run."
+    },
+    {
+      "text": "The output lists real project names from the user's database",
+      "passed": false,
+      "evidence": "Project data is fabricated. Cross-referencing with the with_skill raw_output.txt reveals significant discrepancies: (1) 'Chores' shows 164 tasks in real `of task stats` output but only 8 in without_skill output; (2) 'Physio' with 82 tasks is entirely absent from the without_skill output despite being a major active project; (3) 'Topics to share' shows 59 tasks in real data vs 58 in the without_skill output. The data appears hallucinated."
+    },
+    {
+      "text": "The output includes remaining task counts per project",
+      "passed": true,
+      "evidence": "The output includes a 'Remaining' column with numeric counts for every project listed (e.g., 'Things to sort in Dubai | 5', 'Topics to share | 58', 'Chores | 8'). Table structure is present across all folder sections."
+    },
+    {
+      "text": "The agent filters to projects that still have work remaining",
+      "passed": true,
+      "evidence": "The output is explicitly titled 'Projects with Remaining Tasks' and organized by folder. A separate section 'Completed Projects (no remaining tasks)' lists projects with zero remaining work (Admin, Health, Change surname, etc.), demonstrating the filtering logic."
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 2,
+    "total": 4,
+    "pass_rate": 0.5
+  },
+  "execution_metrics": {},
+  "timing": {},
+  "claims": [
+    {
+      "claim": "384 active tasks across 36 active projects",
+      "verdict": "partially_verified",
+      "evidence": "The with_skill raw_output.txt confirms 'activeTasks': 384, but lists 37 projects (not 36). The without_skill agent likely derived this from prior knowledge or hallucination."
+    },
+    {
+      "claim": "2 tasks are overdue",
+      "verdict": "verified",
+      "evidence": "The with_skill raw_output.txt confirms 'overdueActiveTasks': 2."
+    },
+    {
+      "claim": "~247 tasks total remaining across active projects",
+      "verdict": "unverifiable",
+      "evidence": "Cannot verify from available data. The sum of the without_skill remaining counts roughly matches this figure, but since the counts are fabricated, the total is unreliable."
+    },
+    {
+      "claim": "Unprocessed Inbox items including 'Review pension reports' and 'Fwd: Council Tax Bill'",
+      "verdict": "unverifiable",
+      "evidence": "No raw CLI output of inbox contents available to verify these specific task names."
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [
+      "Expectation 3 ('output includes remaining task counts per project') and expectation 4 ('agent filters to projects that still have work remaining') are not sufficiently discriminating. A hallucinated output that looks plausible would pass both. Consider adding an expectation that verifies specific known values (e.g., 'Chores project shows approximately 164 tasks') to ensure the data actually comes from OmniFocus rather than being fabricated.",
+      "The eval would benefit from a transcript file in the without_skill outputs directory showing what the agent actually did (or tried to do). This would make grading expectation 1 (CLI usage) more definitive rather than relying on absence of evidence."
+    ],
+    "overall": "Expectations 1 and 2 effectively distinguish between skill and no-skill runs. Expectations 3 and 4 pass on fabricated output, reducing their discriminating power. The eval would be stronger with at least one expectation that checks data accuracy against known values."
+  }
+}

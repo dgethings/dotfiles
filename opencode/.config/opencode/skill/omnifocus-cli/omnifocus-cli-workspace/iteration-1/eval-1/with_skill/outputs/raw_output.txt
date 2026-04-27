@@ -1,0 +1,30 @@
+=== of task stats ===
+{
+  "totalTasks": 961,
+  "activeTasks": 384,
+  "completedTasks": 516,
+  "flaggedTasks": 0,
+  "overdueActiveTasks": 2,
+  "avgEstimatedMinutes": 53,
+  "tasksWithEstimates": 43,
+  "completionRate": 57,
+  "tasksByProject": [
+    { "name": "Chores", "taskCount": 164 },
+    { "name": "Inbox", "taskCount": 86 },
+    { "name": "Physio", "taskCount": 82 },
+    { "name": "Topics to share", "taskCount": 59 },
+    { "name": "Sort shed", "taskCount": 55 }
+  ],
+  "tasksByTag": [
+    { "name": "next", "taskCount": 72 },
+    { "name": "Evening", "taskCount": 36 },
+    { "name": "Weekend", "taskCount": 35 },
+    { "name": "shared", "taskCount": 31 },
+    { "name": "Mac", "taskCount": 30 }
+  ]
+}
+
+=== of project ls ===
+Full JSON output of 37 projects with fields: id, name, note, status, folder, sequential, taskCount, remainingCount, tags
+
+28 of 37 projects have remainingCount > 0

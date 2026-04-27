@@ -1,0 +1,68 @@
+{
+  "expectations": [
+    {
+      "text": "The agent queries OmniFocus project data using the `of` CLI",
+      "passed": true,
+      "evidence": "raw_output.txt shows two CLI invocations: '=== of task stats ===' returning task statistics JSON, and '=== of project ls ===' returning 37 projects with metadata. These are outputs from the `of` CLI commands."
+    },
+    {
+      "text": "The output lists real project names from the user's database",
+      "passed": true,
+      "evidence": "response.md lists 28 project names (e.g., 'Topics to share', 'things to read', 'Movies to watch', 'Chores', 'Packing', 'submit tax return'). raw_output.txt confirms these originate from the actual OmniFocus database via `of project ls`."
+    },
+    {
+      "text": "The output includes remaining task counts per project",
+      "passed": true,
+      "evidence": "response.md contains a table with a 'Tasks Left' column showing counts for all 28 projects (e.g., Topics to share: 58, things to read: 31, Movies to watch: 25). raw_output.txt confirms the `of project ls` output includes 'remainingCount' per project."
+    },
+    {
+      "text": "The agent filters to projects that still have work remaining",
+      "passed": true,
+      "evidence": "response.md header states 'Projects with Remaining Tasks (28 projects)'. raw_output.txt notes '28 of 37 projects have remainingCount > 0'. All listed projects have a positive 'Tasks Left' value; the 9 projects with 0 remaining tasks are excluded."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {},
+  "timing": {},
+  "claims": [
+    {
+      "claim": "384 active tasks across all projects",
+      "verified": true,
+      "evidence": "raw_output.txt: 'activeTasks': 384"
+    },
+    {
+      "claim": "57% completion rate",
+      "verified": true,
+      "evidence": "raw_output.txt: 'completionRate': 57"
+    },
+    {
+      "claim": "2 overdue tasks",
+      "verified": true,
+      "evidence": "raw_output.txt: 'overdueActiveTasks': 2"
+    },
+    {
+      "claim": "86 inbox items unprocessed",
+      "verified": true,
+      "evidence": "raw_output.txt tasksByProject: { 'name': 'Inbox', 'taskCount': 86 }"
+    },
+    {
+      "claim": "'submit tax return' is on hold",
+      "verified": true,
+      "evidence": "response.md lists 'submit tax return' with status 'on hold', consistent with the filtering from the `of project ls` output which includes a 'status' field."
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "All expectations pass with clear, verifiable evidence. The evals are well-structured — each checks a distinct, meaningful aspect of the task. No gaps identified."
+  }
+}

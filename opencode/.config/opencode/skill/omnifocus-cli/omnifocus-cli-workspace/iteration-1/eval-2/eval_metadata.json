@@ -1,0 +1,10 @@
+{
+  "eval_id": 2,
+  "eval_name": "dubai-search",
+  "prompt": "Search my OmniFocus for anything related to 'Dubai'. What tasks and projects match?",
+  "assertions": [
+    "The agent uses `of search` to find Dubai-related items",
+    "The output contains real matching task or project names",
+    "The agent reports what it found rather than guessing or making up results"
+  ]
+}

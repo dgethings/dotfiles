@@ -1,0 +1,10 @@
+{
+  "eval_id": 0,
+  "eval_name": "flagged-tasks",
+  "prompt": "What are my flagged tasks? Show me what's most important right now in my OmniFocus.",
+  "assertions": [
+    "The agent uses the `of` CLI to look up real flagged tasks",
+    "The output includes actual task names from the user's OmniFocus database",
+    "The agent does not make up or fabricate task data"
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "expectations": [
+    {
+      "text": "The agent uses `of search` to find Dubai-related items",
+      "passed": false,
+      "evidence": "The output states its method was 'Queried the OmniFocus SQLite database directly at the Group Container path, searching Task names and notes, ProjectInfo, and Folder records for Dubai' (response.md line 53). No `of search` command was used."
+    },
+    {
+      "text": "The output contains real matching task or project names",
+      "passed": true,
+      "evidence": "Verified against the with_skill raw_output.txt: active task names match ('Review pension reports', 'Things to sort in Dubai', 'AI Engineer freelancing starter kit'), project names match ('Things to sort in Dubai', 'Things to sort before selling the house', 'Sort Will'), and subtask names match exactly ('Book gran prix', 'sort contact len subscription', 'setup ENBD bank account so Suzy has access', 'Sort dentist', 'Check if we need uae will'). These are confirmed real OmniFocus items."
+    },
+    {
+      "text": "The agent reports what it found rather than guessing or making up results",
+      "passed": false,
+      "evidence": "While core active items match real data, multiple fabrications are present: (1) 'Things to sort before selling the house' shows '4 remaining' but real data shows 1 remaining (raw_output.txt line 61); (2) lists completed projects ('Things to sort going to Dubai', 'Things to pack') and completed tasks not present in verified search results; (3) claims 26 completed subtasks with unverifiable names; (4) the claimed method (direct SQLite query) cannot be verified from available outputs. The agent mixed real data with fabricated details."
+    }
+  ],
+  "summary": {
+    "passed": 1,
+    "failed": 2,
+    "total": 3,
+    "pass_rate": 0.33
+  },
+  "execution_metrics": {},
+  "timing": {},
+  "claims": [
+    {
+      "claim": "'Things to sort before selling the house' has 4 remaining tasks",
+      "verdict": "contradicted",
+      "evidence": "raw_output.txt line 61 shows remainingCount: 1, not 4"
+    },
+    {
+      "claim": "'Things to sort in Dubai' has 5 available tasks",
+      "verdict": "verified",
+      "evidence": "raw_output.txt line 69 shows remainingCount: 5, matching the output"
+    },
+    {
+      "claim": "'Sort Will' has 0 available, 4 remaining",
+      "verdict": "verified",
+      "evidence": "raw_output.txt line 73-78 shows remainingCount: 4, consistent"
+    },
+    {
+      "claim": "26 completed subtasks under Dubai projects",
+      "verdict": "unverifiable",
+      "evidence": "No raw output available to verify completed task list. The with_skill eval did not query completed tasks."
+    },
+    {
+      "claim": "Queried OmniFocus SQLite database directly at Group Container path",
+      "verdict": "unverifiable",
+      "evidence": "No transcript or execution log available to confirm this method was actually used."
+    },
+    {
+      "claim": "'Things to sort going to Dubai' and 'Things to pack' are completed projects",
+      "verdict": "unverifiable",
+      "evidence": "These projects do not appear in the with_skill `of project ls` output (which only returns active projects in the folder). They could be real completed projects or fabricated."
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [
+      "The 'output contains real matching task or project names' assertion is not discriminating enough for the without_skill case. The agent passed by including some real names but also fabricated others. An assertion checking data accuracy (e.g., correct remaining task counts) would better distinguish genuine skill usage from partial fabrication.",
+      "The 'reports what it found rather than guessing' assertion could be strengthened by requiring a raw_output.txt file showing the actual command/tool output, making fabrication detectable."
+    ],
+    "overall": "The eval correctly identifies that the agent without the skill fails to use `of search` and fabricates data. However, the second assertion ('contains real matching task or project names') passes despite the agent mixing real and fabricated data, which could create false confidence. Consider adding an accuracy-focused assertion."
+  }
+}

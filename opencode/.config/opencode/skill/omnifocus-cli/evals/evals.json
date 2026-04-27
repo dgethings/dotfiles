@@ -1,0 +1,39 @@
+{
+  "skill_name": "omnifocus-cli",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "What are my flagged tasks? Show me what's most important right now in my OmniFocus.",
+      "expected_output": "A list of the user's flagged tasks with their project assignments and relevant details like due dates and notes.",
+      "files": [],
+      "expectations": [
+        "The agent uses the `of` CLI to look up real flagged tasks",
+        "The output includes actual task names from the user's OmniFocus database",
+        "The agent does not make up or fabricate task data"
+      ]
+    },
+    {
+      "id": 1,
+      "prompt": "I need a summary of my current workload. What projects still have remaining tasks, and how many tasks are left in each?",
+      "expected_output": "A structured summary showing active projects with remaining task counts, organized by folder.",
+      "files": [],
+      "expectations": [
+        "The agent queries OmniFocus project data using the `of` CLI",
+        "The output lists real project names from the user's database",
+        "The output includes remaining task counts per project",
+        "The agent filters to projects that still have work remaining"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Search my OmniFocus for anything related to 'Dubai'. What tasks and projects match?",
+      "expected_output": "Search results showing all tasks and projects matching 'Dubai', with details on each match.",
+      "files": [],
+      "expectations": [
+        "The agent uses `of search` to find Dubai-related items",
+        "The output contains real matching task or project names",
+        "The agent reports what it found rather than guessing or making up results"
+      ]
+    }
+  ]
+}

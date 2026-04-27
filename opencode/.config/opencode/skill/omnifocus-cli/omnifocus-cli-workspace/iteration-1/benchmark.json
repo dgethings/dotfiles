@@ -1,0 +1,145 @@
+{
+  "metadata": {
+    "skill_name": "omnifocus-cli",
+    "skill_path": "/Users/dgethings/.config/opencode/skill/omnifocus-cli",
+    "timestamp": "2026-04-12T04:30:00Z",
+    "evals_run": [0, 1, 2],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 0,
+      "eval_name": "flagged-tasks",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0
+      },
+      "expectations": [
+        {"text": "The agent uses the `of` CLI to look up real flagged tasks", "passed": true, "evidence": "raw_output.txt shows structured JSON from OmniFocus CLI queries"},
+        {"text": "The output includes actual task names from the user's OmniFocus database", "passed": true, "evidence": "response.md contains specific task names like 'submit tax return', 'Process inbox', 'Find stick on video doorbell for Suzy'"},
+        {"text": "The agent does not make up or fabricate task data", "passed": true, "evidence": "Machine-formatted JSON with idiosyncratic task names impossible to fabricate convincingly"}
+      ]
+    },
+    {
+      "eval_id": 0,
+      "eval_name": "flagged-tasks",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 3,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0
+      },
+      "expectations": [
+        {"text": "The agent uses the `of` CLI to look up real flagged tasks", "passed": false, "evidence": "No CLI commands used; no data source available"},
+        {"text": "The output includes actual task names from the user's OmniFocus database", "passed": false, "evidence": "Task names are likely fabricated — unverifiable without CLI access"},
+        {"text": "The agent does not make up or fabricate task data", "passed": false, "evidence": "Specific names, projects, and due dates presented with confidence but no data source"}
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "workload-summary",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 0,
+        "tokens": 0
+      },
+      "expectations": [
+        {"text": "The agent queries OmniFocus project data using the `of` CLI", "passed": true, "evidence": "raw_output.txt shows 'of task stats' and 'of project ls' commands"},
+        {"text": "The output lists real project names from the user's database", "passed": true, "evidence": "28 real project names from OmniFocus including 'Topics to share', 'things to read', 'Movies to watch'"},
+        {"text": "The output includes remaining task counts per project", "passed": true, "evidence": "Table with 'Tasks Left' column showing counts for all 28 projects"},
+        {"text": "The agent filters to projects that still have work remaining", "passed": true, "evidence": "Header states 28 of 37 projects have remaining work; all listed have positive counts"}
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "workload-summary",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 2,
+        "failed": 2,
+        "total": 4,
+        "time_seconds": 0,
+        "tokens": 0
+      },
+      "expectations": [
+        {"text": "The agent queries OmniFocus project data using the `of` CLI", "passed": false, "evidence": "No CLI usage; no raw output file"},
+        {"text": "The output lists real project names from the user's database", "passed": false, "evidence": "Data fabricated: Chores shows 8 tasks vs real 164; Physio with 82 tasks entirely absent"},
+        {"text": "The output includes remaining task counts per project", "passed": true, "evidence": "Table with numeric counts present"},
+        {"text": "The agent filters to projects that still have work remaining", "passed": true, "evidence": "Organized by folder with completed section separated"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "dubai-search",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0
+      },
+      "expectations": [
+        {"text": "The agent uses `of search` to find Dubai-related items", "passed": true, "evidence": "raw_output.txt shows 'of search \"Dubai\"' with structured JSON results"},
+        {"text": "The output contains real matching task or project names", "passed": true, "evidence": "Real OmniFocus items with IDs, status, task counts, due dates"},
+        {"text": "The agent reports what it found rather than guessing or making up results", "passed": true, "evidence": "Response faithfully summarizes raw CLI output; gaps noted honestly"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "dubai-search",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.33,
+        "passed": 1,
+        "failed": 2,
+        "total": 3,
+        "time_seconds": 0,
+        "tokens": 0
+      },
+      "expectations": [
+        {"text": "The agent uses `of search` to find Dubai-related items", "passed": false, "evidence": "Agent claimed direct SQLite query instead of using `of search`"},
+        {"text": "The output contains real matching task or project names", "passed": true, "evidence": "Core active items verified against with_skill raw output"},
+        {"text": "The agent reports what it found rather than guessing or making up results", "passed": false, "evidence": "Mixed real data with fabrications: wrong remaining counts, unverifiable completed items"}
+      ]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {"mean": 1.0, "stddev": 0.0, "min": 1.0, "max": 1.0},
+      "time_seconds": {"mean": 0.0, "stddev": 0.0, "min": 0.0, "max": 0.0},
+      "tokens": {"mean": 0, "stddev": 0, "min": 0, "max": 0}
+    },
+    "without_skill": {
+      "pass_rate": {"mean": 0.2778, "stddev": 0.2197, "min": 0.0, "max": 0.5},
+      "time_seconds": {"mean": 0.0, "stddev": 0.0, "min": 0.0, "max": 0.0},
+      "tokens": {"mean": 0, "stddev": 0, "min": 0, "max": 0}
+    },
+    "delta": {
+      "pass_rate": "+0.72",
+      "time_seconds": "+0.0",
+      "tokens": "+0"
+    }
+  },
+  "notes": []
+}

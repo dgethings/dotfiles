@@ -1,0 +1,143 @@
+=== of search "Dubai" ===
+[
+  {
+    "id": "sn6OvF_SR48",
+    "name": "Review pension reports",
+    "note": "They're saying their passive portfolio would have done better\n-- \nCheers\nDg\nBegin forwarded message:\nFrom: \"Thomas Goldie (International)\" <thomas.goldie@hoxtonwealth.com>\nDate: 4 April 2026 at 06:35:46 GST\nTo: David Gethings <dgethings76@gmail.com>\nCc: \"Kane Tucker (International)\" <kane.tucker@hoxtonwealth.com>\nSubject: SIPP Analysis\n\nHi David, \nI hope you're well and thanks again for your time this week. As always it was good to catch up and speak. \nI have heard back from our investment analyst Hitesh and he has provided the below thoughts and comments on your portfolio. \n\"This is a Quilters MPS which we won't be able to pull on FE analytics. The performance figures are in the report as below:\n\"This is all equity portfolio as per report; this will be closely aligned to our level 5 portfolios. However, our core portfolio holds c 5-10% of fixed income so would technically carry a slightly lower level of risk and volatility \nI have attached longscans for both core and passive range.\nThe Volatility target of the Quilters MPS is 19.20-21.20% which is quite high compared to our portfolios\"\nAs you can see your portfolio has performed very well but with quite a high level of volatility. I have attached the long scans of our two risk equivalent portfolios:\nOur core portfolio, which carries a 40% allocation into actively managed funds, with the remainder invested in low-cost tracker funds.\nOur pure passive play, which historically has outperformed your current portfolio and I would hazard a guess at a significantly lower cost on the basis that we are purely using tracker funds.\nPlease let me know your thoughts and if you would like to speak again to look at this more closely.\nWe wouldn't be able to take over management of your existing Quilters policy now that you're overseas; however what we would be able to do is look for another SIPP provider, such as Morningstar, who you will have heard of and are extremely reputable and low cost. We could utilise one of the attached model portfolios so that we can work with you on this over the coming years and build it into the more holistic financial plan that we have been discussing. \nCan you be around at all next week to discuss this in more detail? \nI look forward to hearing back and have a great weekend ahead.\nBest wishes,\nTom \nThomas\n \nGoldie\nConsultant\n\nAddress:\n11th Floor, The One Tower, Sheikh Zayed Road\nDubai\nUnited Arab Emirates\nMobile:\n+971 502731749\n \n \nEmail:\nthomas.goldie@hoxtonwealth.com\nWebsite:\nGlobal Client Services:\nhoxtonwealth.com\n\n+44 20 4620 4820\n\n\n+44 7384 100 200\n\n\n\nclient.services@hoxtonwealth.com\nSee our reviews on\n\nFeatured In",
+    "completed": false,
+    "effectivelyActive": true,
+    "flagged": false,
+    "project": null,
+    "tags": [],
+    "defer": null,
+    "due": null,
+    "estimatedMinutes": null,
+    "completionDate": null,
+    "added": "2026-04-04T19:31:27.000Z",
+    "modified": "2026-04-04T19:31:27.000Z"
+  },
+  {
+    "id": "orH_9nYMNhw",
+    "name": "Things to sort in Dubai",
+    "note": null,
+    "completed": false,
+    "effectivelyActive": true,
+    "flagged": false,
+    "project": "Things to sort in Dubai",
+    "tags": [],
+    "defer": null,
+    "due": null,
+    "estimatedMinutes": null,
+    "completionDate": null,
+    "added": "2025-09-01T19:41:00.656Z",
+    "modified": "2026-04-01T16:57:49.290Z"
+  },
+  {
+    "id": "p7YHRrrifuk",
+    "name": "AI Engineer freelancing starter kit",
+    "note": "https://academy.datalumina.com/freelance\n\nYou pay for access to their setup. They guarantee you'll earn at least the free you pay within 6 months. if not they'll make up the difference\nNot sure how much it costs though\nMight be a good way to get into free lancing because they show you the GTM - something I'm missing\nThey recommend at lest 8hrs a week on this though. Let's see what Dubai is like, that might be doable",
+    "completed": false,
+    "effectivelyActive": true,
+    "flagged": false,
+    "project": "Freelancing",
+    "tags": [],
+    "defer": null,
+    "due": null,
+    "estimatedMinutes": null,
+    "completionDate": null,
+    "added": "2025-11-16T13:15:57.000Z",
+    "modified": "2025-11-17T16:21:57.374Z"
+  }
+]
+
+=== of project ls (Dubai move folder projects) ===
+[
+  {
+    "id": "aqkvZkvRvG9",
+    "name": "Things to sort before selling the house ",
+    "status": "active",
+    "folder": "Dubai move",
+    "taskCount": 13,
+    "remainingCount": 1
+  },
+  {
+    "id": "orH_9nYMNhw",
+    "name": "Things to sort in Dubai",
+    "status": "active",
+    "folder": "Dubai move",
+    "taskCount": 21,
+    "remainingCount": 5
+  },
+  {
+    "id": "dBW3TEU-gBQ",
+    "name": "Sort Will",
+    "status": "active",
+    "folder": "Dubai move",
+    "taskCount": 4,
+    "remainingCount": 4
+  }
+]
+
+=== of task ls --project "Things to sort in Dubai" ===
+[
+  {
+    "id": "orH_9nYMNhw",
+    "name": "Things to sort in Dubai",
+    "project": "Things to sort in Dubai",
+    "completed": false,
+    "flagged": false,
+    "tags": [],
+    "defer": null,
+    "due": null
+  },
+  {
+    "id": "dh_VpjJ0Xk1",
+    "name": "Book gran prix",
+    "project": "Things to sort in Dubai",
+    "completed": false,
+    "flagged": false,
+    "tags": [],
+    "defer": null,
+    "due": null
+  },
+  {
+    "id": "c9NzDjiOnqr",
+    "name": "sort contact len subscription",
+    "project": "Things to sort in Dubai",
+    "completed": false,
+    "flagged": false,
+    "tags": ["next"],
+    "defer": "2026-02-02T05:00:00.000Z",
+    "due": "2026-04-30T13:00:00.000Z"
+  },
+  {
+    "id": "kt2wEBrGAf7",
+    "name": "setup ENBD bank account so Suzy has access",
+    "project": "Things to sort in Dubai",
+    "completed": false,
+    "flagged": false,
+    "tags": [],
+    "defer": null,
+    "due": null
+  },
+  {
+    "id": "g5UnVyjLS6B",
+    "name": "Sort dentist",
+    "project": "Things to sort in Dubai",
+    "completed": false,
+    "flagged": false,
+    "tags": [],
+    "defer": null,
+    "due": null
+  },
+  {
+    "id": "emJACcPBOpS",
+    "name": "Check if we need uae will",
+    "project": "Things to sort in Dubai",
+    "completed": false,
+    "flagged": false,
+    "tags": [],
+    "defer": null,
+    "due": null
+  }
+]
