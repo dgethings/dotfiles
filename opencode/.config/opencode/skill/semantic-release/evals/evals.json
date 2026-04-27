@@ -1,0 +1,66 @@
+{
+  "skill_name": "semantic-release",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "fresh-project-setup",
+      "prompt": "Set up Python Semantic Release for my Python project. The project uses uv and is hosted on GitHub. I haven't configured PSR before. The project is at /path/to/myproject.",
+      "expected_output": "The agent inspects pyproject.toml, installs PSR via uv, generates default config, edits pyproject.toml with required keys (version_toml, commit_parser, build_command with uv lock handling, remote.type=github, changelog settings), sets project.version, tests with --noop, and commits the config. Does NOT configure PyPI publishing.",
+      "files": [],
+      "expectations": [
+        "Uses 'uv add --dev python-semantic-release' to install",
+        "Generates config with 'semantic-release generate-config --pyproject'",
+        "Sets version_toml to pyproject.toml:project.version",
+        "Sets commit_parser to conventional",
+        "Build command includes 'uv lock --upgrade-package'",
+        "Sets remote.type = github",
+        "Tests with 'semantic-release -v --noop version'",
+        "Does NOT add any PyPI publishing configuration"
+      ]
+    },
+    {
+      "id": 2,
+      "eval_name": "github-actions-workflow",
+      "prompt": "Add a GitHub Actions workflow for PSR releases to my Python project. I use uv. I only want GitHub Releases — do NOT set up PyPI publishing.",
+      "expected_output": "The agent creates .github/workflows/release.yml with PSR action, concurrency control, checkout with force reset, GitHub Release assets upload. No PyPI publish steps. Proper permissions (contents: write).",
+      "files": [],
+      "expectations": [
+        "Creates .github/workflows/release.yml",
+        "Uses python-semantic-release/python-semantic-release@v10 action",
+        "Has concurrency control group",
+        "Checkouts with ref: github.ref_name and force reset",
+        "Uses GH_TOKEN: secrets.GITHUB_TOKEN",
+        "Permissions include contents: write",
+        "Does NOT include any PyPI publish step or pypa/gh-action-pypi-publish",
+        "Does NOT include any publish configuration in pyproject.toml"
+      ]
+    },
+    {
+      "id": 3,
+      "eval_name": "monorepo-setup",
+      "prompt": "Configure Python Semantic Release for my monorepo. I have two packages: packages/api and packages/cli. Both use uv. I want GitHub Releases only.",
+      "expected_output": "The agent sets up PSR for both subpackages with appropriate version_toml paths, and creates a GitHub Actions workflow with directory inputs for each subpackage. No PyPI publishing.",
+      "files": [],
+      "expectations": [
+        "Sets version_toml with correct relative paths for each subpackage",
+        "GitHub Actions workflow uses 'directory' input for each subpackage",
+        "Each subpackage action has a unique step id",
+        "Only publishes to GitHub Releases, not PyPI",
+        "Build commands include uv lock handling"
+      ]
+    },
+    {
+      "id": 4,
+      "eval_name": "dry-run-dirty-repo",
+      "prompt": "I have some uncommitted changes and I want to know what version PSR would cut next. Can you check for me?",
+      "expected_output": "The agent runs 'semantic-release -v --noop version' and explains the output: what version would be cut, which commits triggered it, and why.",
+      "files": [],
+      "expectations": [
+        "Uses --noop flag for no side effects",
+        "Explains what version would be cut",
+        "References specific commits that trigger the bump",
+        "Does not modify any files"
+      ]
+    }
+  ]
+}
