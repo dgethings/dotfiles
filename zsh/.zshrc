@@ -2,7 +2,7 @@
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-export PATH=${PATH}:/opt/homebrew/bin
+export PATH="${BUN_INSTALL}/bin:${HOME}/.cargo/bin:${HOME}/.local/bin:/Applications/Obsidian.app/Contents/MacOS:${HOME}/.lmstudio/bin:${PATH}:/opt/homebrew/bin"
 source "${ZINIT_HOME}/zinit.zsh"
 
 # faster way to use eval during startup
@@ -97,4 +97,3 @@ zinit snippet ~/.zinit/tmux-sesh/sesh.zsh
 # OpenClaw Completion
 source "/Users/dgethings/.openclaw/completions/openclaw.zsh"
 
-export PATH="${BUN_INSTALL}/bin:${PATH}:${HOME}/.cargo/bin:${HOME}/.local/bin:/Applications/Obsidian.app/Contents/MacOS:${HOME}/.lmstudio/bin"

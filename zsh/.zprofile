@@ -18,5 +18,5 @@ source "/Users/dgethings/.openclaw/completions/openclaw.zsh"
 
 # Added by `rbenv init` on Sun 20 Jul 2025 13:48:08 BST
 # eval "$(rbenv init - --no-rehash zsh)"
-source ~/.secrets
+[[ -e ~/.secrects ]] && source ~/.secrets
 
