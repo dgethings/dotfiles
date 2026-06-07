@@ -24,13 +24,14 @@ palette = 'nord'
 [custom.prog_ver_start]
 style = "fg:nord9 bg:none"
 symbol = ""
-when = "fd 'pyproject.toml|go.mod' $(git rev-parse --show-toplevel)"
-
+format = "[$symbol]($style)"
+when = "fd 'pyproject.toml|go.mod|package.json' $(git rev-parse --show-toplevel 2>/dev/null) -d 1 -q"
 
 [custom.prog_ver_end]
 style = "fg:nord9 bg:none"
 symbol = ""
-when = "fd 'pyproject.toml|go.mod' $(git rev-parse --show-toplevel)"
+format = "[$symbol]($style)"
+when = "fd 'pyproject.toml|go.mod|package.json' $(git rev-parse --show-toplevel 2>/dev/null) -d 1 -q"
 
 [cmd_duration]
 style = "fg:nord9 bg:none"
@@ -90,16 +91,25 @@ require_repo = true
 symbol = ""
 style = "fg:nord0 bg:nord9"
 format = '[ [$symbol](fg:nord4 bg:nord9) $version ]($style)'
+detect_files = ["pyproject.toml"]
+detect_folders = []
+detect_extensions = []
 
 [golang]
 symbol = ""
 style = "fg:nord0 bg:nord9"
 format = '[ $symbol $version ]($style)'
+detect_files = ["go.mod"]
+detect_folders = []
+detect_extensions = []
 
 [nodejs]
 symbol = ""
 style = "fg:nord0 bg:nord9"
 format = '[ $symbol $version ]($style)'
+detect_files = ["package.json"]
+detect_folders = []
+detect_extensions = []
 
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"
