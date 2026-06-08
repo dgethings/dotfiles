@@ -1,0 +1,4 @@
+worktree-path = "{{ repo_path }}/../{{ branch | sanitize }}"
+
+[post-start]
+window = "sesh window {{ worktree_path }}"
