@@ -1,0 +1,70 @@
+{
+  "eval_id": 0,
+  "eval_name": "sync-weekly-meal-plan",
+  "expectations": [
+    {
+      "text": "Reads the Weekly Meal Plan wiki page via obsidian read",
+      "passed": true,
+      "evidence": "Summary states: 'Read the Weekly Meal Plan.md wiki page via obsidian read' and 'Page: Weekly Meal Plan.md, Section: ## Shopping List'"
+    },
+    {
+      "text": "Extracts items from the Shopping List section (should be ~60 items)",
+      "passed": true,
+      "evidence": "Summary reports 'Items extracted from wiki page: 60' and lists all 60 items with categories: Fish & Seafood (4), Meat & Poultry (1), Eggs & Dairy (2), Legumes (2), Grains (5), Vegetables (18), Fruits (8), Nuts & Seeds (11), Oils & Condiments (6), Beverages (3) = 60 total"
+    },
+    {
+      "text": "Checks existing Shopping list for duplicates via remindctl list Shopping --json",
+      "passed": true,
+      "evidence": "Summary states: 'Fetched existing Shopping list via remindctl list Shopping --json — confirmed 0 open items'"
+    },
+    {
+      "text": "Adds items using remindctl add --list Shopping",
+      "passed": true,
+      "evidence": "Summary states: 'Added all 60 items via remindctl add \"item\" --list Shopping in 6 parallel batches of 10'"
+    },
+    {
+      "text": "Reports correct item counts (added, skipped, total)",
+      "passed": true,
+      "evidence": "Summary table shows: Items extracted: 60, Items added: 60, Items skipped (duplicates): 0, Final open items: 60"
+    },
+    {
+      "text": "No duplicate items were added to the Shopping list",
+      "passed": true,
+      "evidence": "Summary states 0 open items existed on the list pre-sync (all 48 existing were completed), so 0 duplicates were possible. All 60 adds were unique."
+    },
+    {
+      "text": "Provides a clear summary of actions taken",
+      "passed": true,
+      "evidence": "Summary includes a structured results table, numbered action steps, per-category breakdown, and full item listing"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "failed": 0,
+    "total": 7,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {},
+  "timing": {},
+  "claims": [
+    {
+      "claim": "48 existing items on Shopping list, all with isCompleted: true",
+      "verifiable": false,
+      "notes": "Cannot verify from summary alone; no transcript provided"
+    },
+    {
+      "claim": "6 parallel batches of 10 items were used for adding",
+      "verifiable": false,
+      "notes": "No transcript to confirm parallel execution"
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "Evals are thorough and discriminating. No gaps identified."
+  }
+}

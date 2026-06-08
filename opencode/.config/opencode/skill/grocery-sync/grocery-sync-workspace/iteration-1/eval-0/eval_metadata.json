@@ -1,0 +1,14 @@
+{
+  "eval_id": 0,
+  "eval_name": "sync-weekly-meal-plan",
+  "prompt": "Sync my weekly meal plan shopping list to Reminders",
+  "assertions": [
+    {"id": "read-page", "description": "Reads the Weekly Meal Plan wiki page via obsidian read"},
+    {"id": "extract-items", "description": "Extracts items from the Shopping List section (should be ~60 items)"},
+    {"id": "check-existing", "description": "Checks existing Shopping list for duplicates via remindctl list Shopping --json"},
+    {"id": "add-items", "description": "Adds items using remindctl add --list Shopping"},
+    {"id": "correct-count", "description": "Reports correct item counts (added, skipped, total)"},
+    {"id": "no-duplicates-added", "description": "No duplicate items were added to the Shopping list"},
+    {"id": "summary-report", "description": "Provides a clear summary of actions taken"}
+  ]
+}

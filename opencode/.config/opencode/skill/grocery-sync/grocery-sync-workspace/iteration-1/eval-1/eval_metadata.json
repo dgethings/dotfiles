@@ -1,0 +1,14 @@
+{
+  "eval_id": 1,
+  "eval_name": "add-weekend-meal-plan",
+  "prompt": "Add the shopping list from Weekend Meal Plan to my reminders",
+  "assertions": [
+    {"id": "read-page", "description": "Reads the Weekend Meal Plan wiki page via obsidian read"},
+    {"id": "extract-items", "description": "Extracts items from the Shopping List section (should be ~8-9 items from the Weekend page)"},
+    {"id": "check-existing", "description": "Checks existing Shopping list for duplicates before adding"},
+    {"id": "dedup-correct", "description": "Correctly identifies and skips items already on the Shopping list (majority should be duplicates)"},
+    {"id": "add-only-new", "description": "Only adds items that are not already on the list"},
+    {"id": "near-duplicate-awareness", "description": "Notes near-duplicates like 'green lentils' vs 'Green/brown/Puy lentils'"},
+    {"id": "summary-report", "description": "Provides a clear summary with counts of added, skipped, and total items"}
+  ]
+}

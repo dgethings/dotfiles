@@ -1,0 +1,75 @@
+{
+  "eval_id": 2,
+  "eval_name": "update-from-both-meal-plans",
+  "expectations": [
+    {
+      "text": "Reads both Weekly Meal Plan and Weekend Meal Plan wiki pages",
+      "passed": true,
+      "evidence": "Summary's 'Source Pages' table lists both: 'Weekly Meal Plan: 60 items' and 'Weekend Meal Plan: 29 items'"
+    },
+    {
+      "text": "Extracts items from both Shopping List sections",
+      "passed": true,
+      "evidence": "Summary reports 60 items from Weekly Meal Plan and 29 items from Weekend Meal Plan, both extracted from their respective Shopping List sections"
+    },
+    {
+      "text": "Deduplicates between the two source lists (28+ shared items)",
+      "passed": true,
+      "evidence": "Summary states: 'Duplicates between source lists: 28' and 'Unique items after cross-source dedup: 61 (60 from Weekly + 1 from Weekend)'. The single unique Weekend item was Chicken breast."
+    },
+    {
+      "text": "Checks existing Shopping list for open duplicates",
+      "passed": true,
+      "evidence": "Summary states: 'Items checked against existing reminders: 88 (all completed)' and 'Open existing reminders found: 0'"
+    },
+    {
+      "text": "Reports a merged unique count (~61 items)",
+      "passed": true,
+      "evidence": "Summary reports exactly 61 unique items after cross-source dedup, and 61 items added to Reminders"
+    },
+    {
+      "text": "Adds items using remindctl add --list Shopping",
+      "passed": true,
+      "evidence": "Summary states 'All 61 items were added successfully' and the items are listed by category. Consistent with eval-0 which used remindctl add."
+    },
+    {
+      "text": "Provides a clear summary breaking down sources and deduplication",
+      "passed": true,
+      "evidence": "Summary has separate tables for Source Pages (per-page counts), Deduplication (cross-source dupes, unique count, existing check), and Results (added, skipped, final). Also identifies the single unique Weekend item (Chicken breast) explicitly."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "failed": 0,
+    "total": 7,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {},
+  "timing": {},
+  "claims": [
+    {
+      "claim": "88 existing reminders were all completed",
+      "verifiable": false,
+      "notes": "Cannot verify from summary alone; no transcript provided"
+    },
+    {
+      "claim": "Chicken breast is the only unique Weekend item not covered by Weekly",
+      "verifiable": true,
+      "notes": "Consistent with eval-1 results where Chicken breast was also identified as new. Green lentils was not flagged here as unique, which is interesting — eval-2's merged approach treats Green/brown/Puy lentils as covering green lentils, while eval-1 added green lentils separately."
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "cross-source-dedup (28+ shared items)",
+        "issue": "Note an inconsistency: eval-1 treated 'Green lentils' as NOT matching 'Green/brown/Puy lentils' and added it. Eval-2's cross-source dedup found only 28 shared items (implying Green lentils WAS matched/subsumed). The dedup behavior is inconsistent between evals. Consider adding an assertion that explicitly tests how near-duplicates across sources are handled."
+      }
+    ],
+    "overall": "Evals are comprehensive. Minor inconsistency in near-duplicate handling between eval-1 and eval-2 that could be captured by a more specific assertion."
+  }
+}

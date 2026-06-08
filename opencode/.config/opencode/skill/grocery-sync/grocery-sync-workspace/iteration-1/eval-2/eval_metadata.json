@@ -1,0 +1,14 @@
+{
+  "eval_id": 2,
+  "eval_name": "update-from-both-meal-plans",
+  "prompt": "Update my shopping list from both meal plans",
+  "assertions": [
+    {"id": "read-both-pages", "description": "Reads both Weekly Meal Plan and Weekend Meal Plan wiki pages"},
+    {"id": "extract-both", "description": "Extracts items from both Shopping List sections"},
+    {"id": "cross-source-dedup", "description": "Deduplicates between the two source lists (28+ shared items)"},
+    {"id": "check-existing", "description": "Checks existing Shopping list for open duplicates"},
+    {"id": "merged-count", "description": "Reports a merged unique count (~61 items)"},
+    {"id": "add-items", "description": "Adds items using remindctl add --list Shopping"},
+    {"id": "summary-report", "description": "Provides a clear summary breaking down sources and deduplication"}
+  ]
+}

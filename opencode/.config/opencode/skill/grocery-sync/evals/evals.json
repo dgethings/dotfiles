@@ -1,0 +1,45 @@
+{
+  "skill_name": "grocery-sync",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "Sync my weekly meal plan shopping list to Reminders",
+      "expected_output": "Reads Weekly Meal Plan.md, extracts all items from the Shopping List section, checks for duplicates against existing Shopping reminders, adds new items via remindctl, and reports a summary",
+      "files": [],
+      "expectations": [
+        "Reads the Weekly Meal Plan wiki page",
+        "Extracts items from the Shopping List section",
+        "Checks existing Shopping list for duplicates before adding",
+        "Adds items using remindctl add --list Shopping",
+        "Reports count of added, skipped, and total items"
+      ]
+    },
+    {
+      "id": 1,
+      "prompt": "Add the shopping list from Weekend Meal Plan to my reminders",
+      "expected_output": "Reads Weekend Meal Plan.md, extracts items from the Shopping List section, deduplicates against existing Shopping reminders, adds new items, and reports summary",
+      "files": [],
+      "expectations": [
+        "Reads the Weekend Meal Plan wiki page",
+        "Extracts items from the Shopping List section",
+        "Checks existing Shopping list for duplicates before adding",
+        "Adds items using remindctl add --list Shopping",
+        "Reports count of added, skipped, and total items"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Update my shopping list from both meal plans",
+      "expected_output": "Reads both Weekly Meal Plan and Weekend Meal Plan, merges their shopping lists, deduplicates against existing Shopping reminders and between the two lists, adds new items, and reports summary",
+      "files": [],
+      "expectations": [
+        "Reads both Weekly Meal Plan and Weekend Meal Plan wiki pages",
+        "Merges items from both Shopping List sections",
+        "Deduplicates between the two source lists",
+        "Checks existing Shopping list for duplicates before adding",
+        "Adds items using remindctl add --list Shopping",
+        "Reports count of added, skipped, and total items"
+      ]
+    }
+  ]
+}
