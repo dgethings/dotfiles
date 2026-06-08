@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+pane_path="${1:-.}"
+
+git_root=$(git -C "$pane_path" rev-parse --show-toplevel 2>/dev/null) || exit 0
+
+current_wt=$(git -C "$pane_path" rev-parse --show-toplevel 2>/dev/null) || exit 0
+
+entries=""
+while IFS= read -r line; do
+    wt_path=$(echo "$line" | awk '{print $1}')
+    branch=$(echo "$line" | sed -n 's/.*\[\(.*\)\].*/\1/p')
+    [ -z "$branch" ] && continue
+    if [ "$wt_path" = "$current_wt" ]; then
+        entries+="@ ${branch}"$'\t'"${wt_path}"$'\n'
+    else
+        entries+="  ${branch}"$'\t'"${wt_path}"$'\n'
+    fi
+done < <(git -C "$git_root" worktree list)
+
+[ -z "$entries" ] && exit 0
+
+selected=$(echo -n "$entries" | fzf-tmux -p 80%,70% \
+    --delimiter '\t' \
+    --with-nth=1 \
+    --border-label ' worktrees ' \
+    --prompt '🌳 ' \
+    --no-sort \
+    --preview 'wt -C {2} list 2>/dev/null || git -C {2} log --oneline -10 --color=always' \
+    --preview-window 'right:60%')
+
+[ -z "$selected" ] && exit 0
+
+wt_path=$(echo "$selected" | cut -f2)
+sesh window "$wt_path"
