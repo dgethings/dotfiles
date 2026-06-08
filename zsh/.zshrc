@@ -94,6 +94,4 @@ zstyle :omz:plugins:ssh-agent identities ~/.ssh/id_ed25519
 
 zinit snippet ~/.zinit/tmux-sesh/sesh.zsh
 
-# OpenClaw Completion
-source "/Users/dgethings/.openclaw/completions/openclaw.zsh"
-
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
