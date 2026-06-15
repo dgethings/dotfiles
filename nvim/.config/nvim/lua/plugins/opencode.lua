@@ -8,27 +8,49 @@ return {
     }
 
     vim.o.autoread = true -- Required for `opts.events.reload`
+    local opencode = require("opencode")
 
     -- Recommended/example keymaps
     vim.keymap.set({ "n", "x" }, "<leader>oa", function()
-      require("opencode").ask("@this: ")
+      opencode.ask("@this: ")
     end, { desc = "Ask OpenCode…" })
     vim.keymap.set({ "n", "x" }, "<leader>os", function()
-      require("opencode").select()
+      opencode.select()
     end, { desc = "Select OpenCode…" })
 
     vim.keymap.set({ "n", "x" }, "go", function()
-      return require("opencode").operator("@this ")
+      return opencode.operator("@this ")
     end, { desc = "Append range to OpenCode", expr = true })
     vim.keymap.set("n", "goo", function()
-      return require("opencode").operator("@this ") .. "_"
+      return opencode.operator("@this ") .. "_"
     end, { desc = "Append line to OpenCode", expr = true })
+    vim.keymap.set("n", "ot", function()
+      local buf ---@type integer?
+      for _, b in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.bo[b].buftype == "terminal" and vim.api.nvim_buf_get_name(b):find("opencode", 1, true) then
+          buf = b
+          break
+        end
+      end
+      if not buf then
+        opencode.start()
+        return
+      end
+      for _, w in ipairs(vim.api.nvim_list_wins()) do
+        if vim.api.nvim_win_is_valid(w) and vim.api.nvim_win_get_buf(w) == buf then
+          vim.api.nvim_win_hide(w)
+          return
+        end
+      end
+      vim.cmd("vertical sbuffer " .. buf)
+      vim.cmd("wincmd p")
+    end, { desc = "Toggle OpenCode window" })
 
     vim.keymap.set("n", "<S-C-u>", function()
-      require("opencode").command("session.half.page.up")
+      opencode.command("session.half.page.up")
     end, { desc = "Scroll OpenCode up" })
     vim.keymap.set("n", "<S-C-d>", function()
-      require("opencode").command("session.half.page.down")
+      opencode.command("session.half.page.down")
     end, { desc = "Scroll OpenCode down" })
     require("snacks").setup({
       input = {
@@ -40,11 +62,11 @@ return {
           ---@param picker snacks.Picker
           opencode_send = function(picker)
             local items = vim.tbl_map(function(item) ---@param item snacks.picker.Item
-              return item.file and require("opencode").format({ path = item.file, from = item.pos, to = item.end_pos })
+              return item.file and opencode.format({ path = item.file, from = item.pos, to = item.end_pos })
                 or item.text
             end, picker:selected({ fallback = true }))
 
-            require("opencode").prompt(table.concat(items, ", ") .. " ")
+            opencode.prompt(table.concat(items, ", ") .. " ")
           end,
         },
         win = {
@@ -60,7 +82,7 @@ return {
       sections = {
         lualine_z = {
           {
-            require("opencode").statusline,
+            opencode.statusline,
           },
         },
       },
