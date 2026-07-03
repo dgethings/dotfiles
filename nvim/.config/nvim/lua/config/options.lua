@@ -19,3 +19,4 @@ vim.o.winborder = "rounded"
 vim.o.swapfile = false
 vim.opt.undofile = true
 vim.opt.undoreload = 10000
+vim.o.exrc = true
