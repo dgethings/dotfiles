@@ -1,7 +1,8 @@
 return {
-  "nickjvandyke/opencode.nvim",
-  version = "*", -- Latest stable release
-  config = function()
+  {
+    "nickjvandyke/opencode.nvim",
+    version = "*", -- Latest stable release
+    config = function()
     ---@type opencode.Opts
     vim.g.opencode_opts = {
       -- Your configuration, if any; goto definition on the type or field for details
@@ -52,7 +53,24 @@ return {
     vim.keymap.set("n", "<S-C-d>", function()
       opencode.command("session.half.page.down")
     end, { desc = "Scroll OpenCode down" })
-    require("snacks").setup({
+    require("lualine").setup({
+      sections = {
+        lualine_z = {
+          {
+            opencode.statusline,
+          },
+        },
+      },
+    })
+  end,
+  },
+  -- Extend LazyVim's built-in snacks.nvim with the opencode picker action.
+  -- We must NOT call `require("snacks").setup()` here because LazyVim has
+  -- already set it up; doing so triggers the "snacks.nvim is already setup"
+  -- warning on startup. Using `opts` lets lazy.nvim deep-merge these values.
+  {
+    "folke/snacks.nvim",
+    opts = {
       input = {
         enabled = true, -- Enhances `ask()`
       },
@@ -61,6 +79,7 @@ return {
         actions = {
           ---@param picker snacks.Picker
           opencode_send = function(picker)
+            local opencode = require("opencode")
             local items = vim.tbl_map(function(item) ---@param item snacks.picker.Item
               return item.file and opencode.format({ path = item.file, from = item.pos, to = item.end_pos })
                 or item.text
@@ -77,15 +96,6 @@ return {
           },
         },
       },
-    })
-    require("lualine").setup({
-      sections = {
-        lualine_z = {
-          {
-            opencode.statusline,
-          },
-        },
-      },
-    })
-  end,
+    },
+  },
 }
