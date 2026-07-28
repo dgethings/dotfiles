@@ -10,7 +10,7 @@
         ".py"
       ]
     },
-    "toml-lsp": {
+    "toml": {
       "command": [
         "tombi",
         "lsp"
@@ -27,6 +27,10 @@
       "extensions": [
         ".py"
       ]
+    },
+    "markdown": {
+      "command": ["marksman", "server"],
+      "extensions": ["*.md"]
     }
   }
 }
