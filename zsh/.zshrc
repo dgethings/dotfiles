@@ -50,6 +50,7 @@ setopt hist_ignore_dups
 setopt hist_find_no_dups
 
 source ${HOME}/.aliases
+source ${HOME}/.zsh_completions 2>/dev/null || true
 
 # completion styling
 zstyle ':completion:*' list-color "${(s.:.)LS_COLORS}"
@@ -75,6 +76,9 @@ zinit light zdharma-continuum/null
 zinit ice id-as"orbctl_completion" has"orbctl" \
   eval"devpod completion zsh"
 zinit light zdharma-continuum/null
+zinit ice id-as"wt_completion" has"wt" \
+    eval"wt config shell init zsh"
+zinit light zdharma-continuum/null
 
 # load OMZ plugins
 zinit wait lucid for \
@@ -93,5 +97,3 @@ zstyle :omz:plugins:ssh-agent agent-forwarding yes
 zstyle :omz:plugins:ssh-agent identities ~/.ssh/id_ed25519
 
 zinit snippet ~/.zinit/tmux-sesh/sesh.zsh
-
-if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi

@@ -1,0 +1,31 @@
+# Hand-written zsh completions for custom commands.
+#
+# Each git subcommand `git <foo>` gets a function `_git_<foo>` (dashes become
+# underscores): that is the name git's completion dispatcher looks up (see
+# `__git_complete_command` in git's completion). Starting the body with
+# `emulate -L zsh` overrides the `emulate ksh` wrapper git dispatches under,
+# so plain zsh syntax is safe to use inside.
+
+# git bare-clone <owner/repo>  -- complete from your GitHub repos (cached 1d).
+_git_bare_clone() {
+  emulate -L zsh
+
+  local cache="${XDG_CACHE_HOME:-$HOME/.cache}/git-bare-clone/repos"
+  local max_age=$((60 * 60 * 24)) # 1 day
+
+  if [[ ! -f $cache || $(($(date +%s) - $(date -r "$cache" +%s 2>/dev/null || echo 0))) -gt $max_age ]]; then
+    mkdir -p "${cache:h}"
+    if ! gh repo list --limit 200 --json nameWithOwner -q '.[].nameWithOwner' >| "$cache" 2>/dev/null; then
+      _message -e repositories 'owner/repo (run `gh auth login` to enable completion)'
+      return
+    fi
+  fi
+
+  local -a repos
+  repos=("${(@f)$(<"$cache")}")
+  (( ${#repos[@]} )) \
+    && _describe -t repositories 'GitHub repository' repos \
+    || _message -e repositories 'owner/repo'
+}
+
+# vim: set ft=zsh:
