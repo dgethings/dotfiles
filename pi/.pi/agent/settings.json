@@ -3,5 +3,6 @@
   "theme": "nord",
   "defaultProvider": "z.ai",
   "defaultModel": "glm-5.2",
-  "defaultThinkingLevel": "medium"
+  "defaultThinkingLevel": "medium",
+  "packages": ["https://github.com/carderne/pi-nvim"]
 }
