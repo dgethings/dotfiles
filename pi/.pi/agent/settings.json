@@ -1,8 +1,12 @@
 {
-  "lastChangelogVersion": "0.82.1",
+  "lastChangelogVersion": "0.84.1",
   "theme": "nord",
   "defaultProvider": "z.ai",
   "defaultModel": "glm-5.2",
   "defaultThinkingLevel": "medium",
-  "packages": ["https://github.com/carderne/pi-nvim"]
+  "packages": [
+    "https://github.com/carderne/pi-nvim",
+    "npm:pi-lens",
+    "npm:@juicesharp/rpiv-ask-user-question"
+  ]
 }
