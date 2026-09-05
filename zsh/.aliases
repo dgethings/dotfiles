@@ -1,4 +1,4 @@
-alias ls="eza --no-user --icons"
+alias ls="eza --no-user --icons always"
 alias dir="ls -l"
 alias v="dir -a"
 alias t="v --tree"
