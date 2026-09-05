@@ -74,7 +74,6 @@ format = "[]($style)[ $version ](fg:nord0 bg:nord9)[]($style)"
 [git_branch]
 symbol = ""
 style = "fg:nord0 bg:nord7"
-# format = '[](fg:nord7 bg:none)[ $symbol $branch [$all_status$ahead_behind ]($style)]($style)'
 format = '[](fg:nord7 bg:none)[ $symbol $branch ]($style)'
 
 [git_status]
@@ -91,25 +90,16 @@ require_repo = true
 symbol = ""
 style = "fg:nord0 bg:nord9"
 format = '[ [$symbol](fg:nord4 bg:nord9) $version ]($style)'
-detect_files = ["pyproject.toml"]
-detect_folders = []
-detect_extensions = []
 
 [golang]
 symbol = ""
 style = "fg:nord0 bg:nord9"
-format = '[ $symbol $version ]($style)'
-detect_files = ["go.mod"]
-detect_folders = []
-detect_extensions = []
+format = '[ [$symbol](fg:nord4 bg:nord9) $version ]($style)'
 
 [nodejs]
 symbol = ""
 style = "fg:nord0 bg:nord9"
-format = '[ $symbol $version ]($style)'
-detect_files = ["package.json"]
-detect_folders = []
-detect_extensions = []
+format = '[ [$symbol](fg:nord4 bg:nord9) $version ]($style)'
 
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"
