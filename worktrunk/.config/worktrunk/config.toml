@@ -1,4 +1,11 @@
 worktree-path = "{{ repo_path }}/../{{ branch | sanitize }}"
 
-[post-start]
-window = "sesh window {{ worktree_path }}"
+# [post-start]
+# new_tab = "herdr tab create --label {{ branch | sanitize }} --focus"
+# path = "wt switch -"
+
+# [post-start]
+# window = "sesh window {{ worktree_path }}"
+
+[list]
+json-schema = 2
