@@ -38,7 +38,7 @@
         "type": "local",
         "command": ["npx","-y","@z_ai/mcp-server"],
         "environment": {
-            "Z_AI_API_KEY": "0903c5df926042c0938924bef75b4dd8.171L8eGk6PilkjPa",
+            "Z_AI_API_KEY": "{env:ZAI_API_KEY}",
             "Z_AI_MODE": "ZAI"
         }
     }
