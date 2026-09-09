@@ -1,5 +1,6 @@
 return {
   "sphamba/smear-cursor.nvim",
+  enable = false,
   event = "VeryLazy",
   cond = vim.g.neovide == nil,
   opts = {
