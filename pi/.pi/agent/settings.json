@@ -1,12 +1,21 @@
 {
-  "lastChangelogVersion": "0.84.1",
+  "lastChangelogVersion": "1.5.0",
   "theme": "nord",
-  "defaultProvider": "z.ai",
+  "defaultProvider": "zai",
   "defaultModel": "glm-5.2",
   "defaultThinkingLevel": "medium",
   "packages": [
     "https://github.com/carderne/pi-nvim",
     "npm:pi-lens",
-    "npm:@juicesharp/rpiv-ask-user-question"
-  ]
+    "npm:@juicesharp/rpiv-ask-user-question",
+    "npm:@jmcombs/pi-1password",
+    "npm:pi-apple-fm"
+  ],
+  "extensions": [
+    "-builtin:mcp"
+  ],
+  "extensionChangelogVersions": {
+    "{\"source\":\"npm:pi-lens\",\"scope\":\"user\"}": "4.4.8",
+    "{\"source\":\"npm:pi-apple-fm\",\"scope\":\"user\"}": "0.1.1"
+  }
 }

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "entries": {
+    "[\"npx\",\"@z_ai/mcp-server\",\"\"]": {
+      "resolvedBin": "/Users/dgethings/.npm/_npx/aefbec131226782c/node_modules/@z_ai/mcp-server/build/index.js",
+      "resolvedAt": 1793293927218,
+      "packageVersion": "0.1.5",
+      "isJs": true
+    }
+  }
+}

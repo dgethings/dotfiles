@@ -1,0 +1,13 @@
+[2026-11-02T18:59:32.186Z] Starting
+  Trigger: provider request
+  Server check: stopped
+  Opening /usr/bin/fm serve in Terminal.app on 127.0.0.1:1976
+  The Terminal tab must remain open and foregrounded for PCC.
+[2026-11-02T18:59:39.553Z] Apple FM ready
+  Keep Terminal tab open; if closed, next model request restarts it.
+  Trigger: provider request
+  Server: running
+  Endpoint: http://127.0.0.1:1976
+  system: available
+  pcc: not reported by fm serve
+  Terminal result: command accepted
