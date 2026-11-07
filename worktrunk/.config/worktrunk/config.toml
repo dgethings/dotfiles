@@ -9,3 +9,19 @@ worktree-path = "{{ repo_path }}/../{{ branch | sanitize }}"
 
 [list]
 json-schema = 2
+
+[aliases]
+fetch-all = "git fetch --prune && wt step for-each -- sh -c '[ \"$(git rev-parse @{u} 2>/dev/null)\" ] || exit 0; git pull --autostash'"
+
+# Rebase every worktree onto its upstream (docs recipe).
+# Skips branches with no upstream or mid-rebase; fast-forwards dirty trees;
+# rebases clean trees, aborting on conflict. Never leaves broken state.
+up = '''
+git fetch --all --prune; wt step for-each -- sh -c '
+  git rev-parse --verify -q @{u} >/dev/null || exit 0
+  g=$(git rev-parse --git-dir)
+  rebasing() { test -d "$g/rebase-merge" || test -d "$g/rebase-apply"; }
+  rebasing && exit 0
+  git diff --quiet HEAD || { git merge --ff-only --no-autostash @{u}; exit 0; }
+  git rebase @{u} --no-autostash || { rebasing || exit 0; git rebase --abort; }'
+'''
