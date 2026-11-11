@@ -1,3 +1,13 @@
 {
-  "mcpServers": {}
+  "mcpServers": {
+    "zai-vision": {
+      "command": "npx",
+      "args": ["-y", "@z_ai/mcp-server"],
+      "env": {
+        "Z_AI_MODE": "ZAI",
+        "Z_AI_API_KEY": "!python3 -c \"import json,os;print(json.load(open(os.path.expanduser('~/.pi/agent/auth.json')))['zai']['key'])\""
+      },
+      "description": "Z.AI GLM vision tools: analyze images and screenshots (OCR/code extraction, UI-to-code, error diagnosis, technical diagrams, charts, UI diff checks) and video analysis"
+    }
+  }
 }

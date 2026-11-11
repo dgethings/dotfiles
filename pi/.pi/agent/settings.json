@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "1.5.0",
+  "lastChangelogVersion": "1.5.2",
   "theme": "nord",
   "defaultProvider": "zai",
   "defaultModel": "glm-5.2",
@@ -15,7 +15,7 @@
     "-builtin:mcp"
   ],
   "extensionChangelogVersions": {
-    "{\"source\":\"npm:pi-lens\",\"scope\":\"user\"}": "4.4.8",
+    "{\"source\":\"npm:pi-lens\",\"scope\":\"user\"}": "4.4.12",
     "{\"source\":\"npm:pi-apple-fm\",\"scope\":\"user\"}": "0.1.1"
   }
 }
